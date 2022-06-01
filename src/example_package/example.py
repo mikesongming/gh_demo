@@ -6,3 +6,6 @@ def time_two(number):
 
 def half(number):
     return number /2
+
+def square(number):
+    return number * number
