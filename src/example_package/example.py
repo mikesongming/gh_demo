@@ -3,3 +3,6 @@ def add_one(number):
 
 def time_two(number):
     return number * 2
+
+def half(number):
+    return number /2
