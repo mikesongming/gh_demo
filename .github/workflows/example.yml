@@ -1,23 +1,41 @@
-name: Example Workflow
+# name: Example Workflow
 
-on: 
-  push
+# on: 
+#   push
+
+# jobs:
+#   example-job:
+#     runs-on: ubuntu-latest
+#     name: Save output
+#     steps:
+#       - uses: actions/checkout@v3
+#       - name: Run build script
+#         run: bash ./.github/scripts/build.sh
+#         shell: bash
+#       - shell: bash
+#         run: |
+#           expr 1 + 1 > output.log
+#       - name: Upload output file
+#         uses: actions/upload-artifact@v3
+#         with:
+#           name: output-log-file
+#           path: output.log
+
+name: Greeting on variable day
+
+on:
+  workflow_dispatch
+
+env:
+  DAY_OF_WEEK: Monday
 
 jobs:
-  example-job:
+  greeting_job:
     runs-on: ubuntu-latest
-    name: Save output
+    env:
+      Greeting: Hello
     steps:
-      - uses: actions/checkout@v3
-      - name: Run build script
-        run: bash ./.github/scripts/build.sh
-        shell: bash
-      - shell: bash
-        run: |
-          expr 1 + 1 > output.log
-      - name: Upload output file
-        uses: actions/upload-artifact@v3
-        with:
-          name: output-log-file
-          path: output.log
-          
+      - name: "Say Hello Mona it's Monday"
+        run: echo "$Greeting $First_Name. Today is $DAY_OF_WEEK!"
+        env:
+          First_Name: Mona
