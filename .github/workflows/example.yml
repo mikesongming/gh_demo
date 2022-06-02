@@ -1,3 +1,8 @@
+name: Example Workflow
+
+on: 
+  push
+  
 jobs:
   example-job:
     steps:
