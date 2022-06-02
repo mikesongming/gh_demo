@@ -6,8 +6,18 @@ on:
 jobs:
   example-job:
     runs-on: ubuntu-latest
+    name: Save output
     steps:
       - uses: actions/checkout@v3
       - name: Run build script
         run: bash ./.github/scripts/build.sh
         shell: bash
+      - shell: bash
+        run: |
+          expr 1 + 1 > output.log
+      - name: Upload output file
+        uses: actions/upload-artifact@v3
+        with:
+          name: output-log-file
+          path: output.log
+          
