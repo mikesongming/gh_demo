@@ -42,27 +42,36 @@
 
 name: Mixed inputs
 
-on:
+on: 
   workflow_dispatch:
     inputs:
-      name:
-        type: choice
-        description: Who to greet
-        options: 
-        - monalisa
-        - cschleiden
-      message:
+      logLevel:
+        description: 'Log level'     
         required: true
-      use-emoji:
+        default: 'warning' 
+        type: choice
+        options:
+        - info
+        - warning
+        - debug 
+      tags:
+        description: 'Test scenario tags'
+        required: false 
         type: boolean
-        description: Include  emojis
       environment:
+        description: 'Environment to run tests against'
         type: environment
+        required: true 
 
 jobs:
-  greet:
+  log-the-inputs:
     runs-on: ubuntu-latest
-
     steps:
-    - name: Send greeting
-      run: echo "${{ github.event.inputs.message }} ${{ fromJSON('["", ""]')[github.event.inputs.use-emoji == 'true'] }} ${{ github.event.inputs.name }}"
+      - run: |
+          echo "Log level: $LEVEL"
+          echo "Tags: $TAGS"
+          echo "Environment: $ENVIRONMENT"
+        env:
+          LEVEL: ${{ github.event.inputs.logLevel }}
+          TAGS: ${{ github.event.inputs.tags }}
+          ENVIRONMENT: ${{ github.event.inputs.environment }}
