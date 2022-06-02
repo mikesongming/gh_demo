@@ -9,5 +9,5 @@ jobs:
     steps:
       - uses: actions/checkout@v3
       - name: Run build script
-        run: ./.github/scripts/build.sh
+        run: bash ./.github/scripts/build.sh
         shell: bash
