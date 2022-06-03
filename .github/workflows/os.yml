@@ -21,7 +21,8 @@ jobs:
         env:
           OS_NAME: ${{runner.os}}
         run:
-          echo "${OS_NAME}"
+          python -c "import os; print(os.environ['OS_NAME'])"
+          # echo "${OS_NAME}"
       - name: Print Python Platform
         run: 
           python -c "import platform; print(platform.platform())"
