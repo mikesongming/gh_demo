@@ -1,0 +1,27 @@
+name: Show RUNNER OS
+
+on:
+  workflow_dispatch
+
+jobs:
+  print_os:
+    name: Show Name of OS
+    strategy:
+      matrix:
+        os: [ubuntu-latest, macosx-12, windows-latest]
+    runs-on: ${{ matrix.os }}
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+      - name: Set up Python3
+        uses: actions/setup-python@v3
+        with:
+          python-version: "3.8"
+      - name: Print Name of OS
+        env:
+          OS_NAME: ${{runner.os}}
+        run:
+          echo "${OS_NAME}"
+      - name: Print Python Platform
+        run: 
+          python -c "import platform; print(platform.platform())"
