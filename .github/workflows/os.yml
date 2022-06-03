@@ -8,7 +8,7 @@ jobs:
     name: Show Name of OS
     strategy:
       matrix:
-        os: [ubuntu-latest, macosx-12, windows-latest]
+        os: [ubuntu-latest, macosx-latest, windows-latest]
     runs-on: ${{ matrix.os }}
     steps:
       - name: Checkout
