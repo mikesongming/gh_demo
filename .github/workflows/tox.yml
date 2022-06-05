@@ -4,8 +4,8 @@ on: [push]
 
 jobs:
   build:
+    # matrix option will append to name automatically
     name: Tox Demo
-    # name: "${{ matrix.os }}-py${{ matrix.python }}"
 
     strategy:
       matrix:
