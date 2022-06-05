@@ -28,15 +28,13 @@ jobs:
       #   with:
       #     python-version: ${{ matrix.python }}
       
-      # - name: Get latest CMake and ninja
-      #   uses: lukka/get-cmake@latest
+      - name: Get latest CMake and ninja
+        uses: lukka/get-cmake@latest
 
       - run: |
           python --version
           cmake --version
-      - shell: bash
-        if: runner.os == 'Windows'
-        run: ninja --version
+          ninja --version
 
       # - name: CMake build & test
       #   run: |
