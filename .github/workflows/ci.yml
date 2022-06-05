@@ -17,7 +17,7 @@ jobs:
     strategy:
       matrix:
         os: [ubuntu-latest, macos-latest, windows-latest]
-        python: ["3.9"]
+        python: ["3.9", "3.10"]
     runs-on: ${{matrix.os}}
     steps:
       - name: Checkout
@@ -28,13 +28,18 @@ jobs:
         with:
           python-version: ${{ matrix.python }}
       
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+      #     pip install poetry tox tox-gh-actions
+
       - name: Get latest CMake and ninja
         uses: lukka/get-cmake@latest
 
-      - run: |
-          python --version
-          cmake --version
-          ninja --version
+      # - run: |
+      #     python --version
+      #     cmake --version
+      #     ninja --version
 
       - name: CMake build & test
         run: |
@@ -43,10 +48,6 @@ jobs:
           cmake --build build --target test
           ./build/main
 
-      # - name: Install dependencies
-      #   run: |
-      #     python -m pip install --upgrade pip
-      #     pip install poetry tox tox-gh-actions
 
       # - name: Test with tox
       #   run: tox
