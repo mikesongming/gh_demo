@@ -32,8 +32,8 @@ jobs:
         uses: lukka/get-cmake@latest
 
       - run: |
-        which cmake
-        which ninja
+          which cmake
+          which ninja
 
       # - name: Install dependencies
       #   run: |
