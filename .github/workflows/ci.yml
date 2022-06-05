@@ -34,7 +34,9 @@ jobs:
       - run: |
           python --version
           cmake --version
-          ninja --version
+      - shell: bash
+        if: ${{matrix.os}} == 'windows-latest'
+        run: ninja --version
 
       # - name: CMake build & test
       #   run: |
