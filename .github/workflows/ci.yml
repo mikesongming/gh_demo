@@ -28,14 +28,17 @@ jobs:
         with:
           python-version: ${{ matrix.python }}
       
-      - name: Get latest CMake and ninja
-        uses: lukka/get-cmake@latest
+      # - name: Get latest CMake and ninja
+      #   uses: lukka/get-cmake@latest
 
-      - name: CMake build & test
-        run: |
-          cmake -S . -Bbuild
-          cmake --build build
-          cmake --build build --target test
+      - run: |
+          which cmake
+
+      # - name: CMake build & test
+      #   run: |
+      #     cmake -S . -Bbuild
+      #     cmake --build build
+      #     cmake --build build --target test
 
       # - name: Install dependencies
       #   run: |
