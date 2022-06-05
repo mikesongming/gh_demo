@@ -4,7 +4,8 @@ on: [push]
 
 jobs:
   build:
-    name: "${{ matrix.os }}-py${{ matrix.python }}"
+    name: Tox Demo
+    # name: "${{ matrix.os }}-py${{ matrix.python }}"
 
     strategy:
       matrix:
