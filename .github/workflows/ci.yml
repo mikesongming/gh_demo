@@ -35,27 +35,28 @@ jobs:
           python -m pip install --upgrade pip
           python -m pip install build
           python -m pip install pytest
-      #     python -m pip install cibuildwheel
+          python -m pip install cibuildwheel
       #     pip install poetry tox tox-gh-actions
 
-      - name: Get latest CMake and ninja
-        uses: lukka/get-cmake@latest
+      # - name: Get latest CMake and ninja
+      #   uses: lukka/get-cmake@latest
 
-      # - name: Build wheels with CIBW
-      #   uses: pypa/cibuildwheel@v2.6.0
-      #   with:
-      #     output-dir: dist
-      #   env:
-      #     CIBW_SKIP: "*-win32 *-manylinux_i686"
+      - name: Build wheels with CIBW
+        uses: pypa/cibuildwheel@v2.6.0
+        with:
+          output-dir: dist
+        env:
+          CIBW_SKIP: "*-win32 *-manylinux_i686 *-musllinux* *_arm64"
+          CIBW_TEST_COMMAND: pytest -s -vv
 
-      - name: Build Package with Extension
-        run: |
-          python -m build -w
+      # - name: Build Package with Extension
+      #   run: |
+      #     python -m build -w
 
-      - name: Test using pytest
-        run: |
-          python -m pip install --force-reinstall `find dist -name "*.whl"`
-          pytest -s -vv
+      # - name: Test using pytest
+      #   run: |
+      #     python -m pip install --force-reinstall `find dist -name "*.whl"`
+      #     pytest -s -vv
 
       # - name: Test with tox
       #   run: tox

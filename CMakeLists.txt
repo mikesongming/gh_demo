@@ -27,7 +27,7 @@ elseif(UNIX)
     )
 endif()
 
-# EXAMPLE_VERSION_INFO is defined by setup.py and passed into the C++ code as a
+# SDIST_VERSION_INFO is defined by setup.py and passed into the C++ code as a
 # define (VERSION_INFO) here.
 target_compile_definitions(_fseg
-                           PRIVATE VERSION_INFO=${EXAMPLE_VERSION_INFO})
+                           PRIVATE VERSION_INFO=${SDIST_VERSION_INFO})
