@@ -3,16 +3,16 @@ project(FSEG)
 
 # set(CMAKE_CXX_STANDARD 14)
 
-# add_subdirectory(pybind11)
+set(FETCHCONTENT_UPDATES_DISCONNECTED ON CACHE BOOL "Disable updating fetched content")
 
-find_package(pybind11 CONFIG)
-if(pybind11_FOUND)
-    include(CMakePrintHelpers)
-    cmake_print_variables(pybind11_VERSION pybind11_VERSION_TYPE)
-    cmake_print_variables(pybind11_INCLUDE_DIRS pybind11_INCLUDE_DIR)
-    cmake_print_variables(pybind11_LIBRARIES pybind11_LIBRARY)
-    cmake_print_variables(pybind11_DEFINITIONS)
-endif(pybind11_FOUND)
+include(FetchContent)
+
+FetchContent_Declare(pybind11
+    GIT_REPOSITORY https://github.com/pybind/pybind11.git
+    GIT_TAG v2.8.1
+)
+
+FetchContent_MakeAvailable(pybind11)
 
 pybind11_add_module(_fseg src/main.cpp
  src/pet.hpp src/animal.hpp src/vec.hpp src/num.hpp)
