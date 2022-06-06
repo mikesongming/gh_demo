@@ -45,19 +45,8 @@ jobs:
           CIBW_SKIP: "*-win32 *-manylinux_i686 *-musllinux* *_arm64"
           CIBW_TEST_REQUIRES: pytest
           CIBW_TEST_COMMAND: pytest -s -vv {package}/tests
-
-      # - name: Build Package with Extension
-      #   run: |
-      #     python -m build -w
-
-      # - name: Test using pytest
-      #   run: |
-      #     python -m pip install --force-reinstall `find dist -name "*.whl"`
-      #     pytest -s -vv
-
-      # - name: Test with tox
-      #   run: tox
         
+
   publish_testpypi:
     name: Publish Python 🐍 sdist 📦 to TestPyPI
     needs: build_test
@@ -83,8 +72,9 @@ jobs:
         run: |
           python -m build -s
 
-      - name: Publish distribution 📦 to Test PyPI
-        uses: pypa/gh-action-pypi-publish@v1
+      - name: Publish package to TestPyPI
+        uses: pypa/gh-action-pypi-publish@release/v1
         with:
+          user: __token__
           password: ${{ secrets.TEST_PYPI_API_TOKEN }}
           repository_url: https://test.pypi.org/legacy/
