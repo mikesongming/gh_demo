@@ -31,23 +31,19 @@ jobs:
       - name: Install dependencies
         run: |
           python -m pip install --upgrade pip
+          python -m pip install pytest
       #     pip install poetry tox tox-gh-actions
 
       - name: Get latest CMake and ninja
         uses: lukka/get-cmake@latest
 
-      # - run: |
-      #     python --version
-      #     cmake --version
-      #     ninja --version
-
-      - name: CMake build & test
+      - name: Build Package with Extension
         run: |
-          cmake -S . -Bbuild -G Ninja
-          cmake --build build
-          cmake --build build --target test
-          ./build/main
+          python -m build
 
+      - name: Test using pytest
+        run: |
+          pytest -s -v    
 
       # - name: Test with tox
       #   run: tox
