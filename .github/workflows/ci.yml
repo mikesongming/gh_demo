@@ -44,7 +44,8 @@ jobs:
 
       - name: Test using pytest
         run: |
-          pytest -s -v    
+          python -m pip install --force-reinstall `find dist -name "*.whl"`
+          pytest -s -vv
 
       # - name: Test with tox
       #   run: tox
