@@ -46,7 +46,7 @@ jobs:
 
       - name: Debug Windows wheel
         run: |
-          tar -tvf `find dist -name "*.whl"
+          tar -tvf `find dist -name "*.whl"`
       # - name: Test using pytest
       #   run: |
       #     python -m pip install --force-reinstall `find dist -name "*.tar.gz"`
