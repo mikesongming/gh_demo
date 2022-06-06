@@ -40,11 +40,11 @@ jobs:
 
       - name: Build Package with Extension
         run: |
-          python -m build
+          python -m build -s
 
       - name: Test using pytest
         run: |
-          python -m pip install --force-reinstall `find dist -name "*.whl"`
+          python -m pip install --force-reinstall `find dist -name "*.tar.gz"`
           pytest -s -vv
 
       # - name: Test with tox
