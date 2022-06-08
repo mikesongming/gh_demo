@@ -1,4 +1,4 @@
-name: Continuous Integration of Python Package with Pybind11 Extension
+name: CIBW on Python Extension Packaging
 
 on:
   push:
