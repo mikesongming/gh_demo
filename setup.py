@@ -92,6 +92,8 @@ class CMakeBuild(build_ext):
                 ]
                 build_args += ["--config", cfg]
 
+                assert cfg=="Release", "MSVC only support building pybind11 of Release type"
+
         if sys.platform.startswith("darwin"):
             import sysconfig
  
