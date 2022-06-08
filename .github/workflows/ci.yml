@@ -14,6 +14,8 @@ defaults:
 jobs:
   build_test:
     name: Build and Test (${{ matrix.python }}-${{ matrix.buildplat[1] }})
+    if: "contains(github.event.head_commit.message, '[ci]')"
+    runs-on: ${{ matrix.buildplat[0] }}
     strategy:
       fail-fast: false
       matrix:
@@ -26,7 +28,6 @@ jobs:
         - [windows-2022, win_amd64]
         # python: ["cp38", "cp39", "cp310"]
         python: ["cp310"]
-    runs-on: ${{ matrix.buildplat[0] }}
     steps:
       - name: Checkout
         uses: actions/checkout@v3
@@ -79,5 +80,5 @@ jobs:
           password: ${{ secrets.TEST_PYPI_API_TOKEN }}
           repository_url: https://test.pypi.org/legacy/
           skip_existing: true
-          verbose: true
           print_hash: true
+          # verbose: true
