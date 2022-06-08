@@ -43,7 +43,7 @@ jobs:
           python -m pip install --force-reinstall `find dist -name "*.whl"`
           python -m pytest -s -vv
 
-   publish_testpypi:
+  publish_testpypi:
     name: Publish Python 🐍 sdist 📦 to TestPyPI
     needs: build_test
     runs-on: ubuntu-latest
