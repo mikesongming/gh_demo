@@ -1,4 +1,4 @@
-name: Continuous Integration of Python Pybind11 Extension Package
+name: Continuous Integration of Pybind11 Extension Package
 
 on:
   push:
