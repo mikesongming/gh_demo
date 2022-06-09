@@ -2,6 +2,19 @@
 requires = ["setuptools>=42", "ninja>=1.10"]
 build-backend = "setuptools.build_meta"
 
+[tool.pytest.ini_options]
+minversion = "7.1"
+required_plugins = "pytest-cov>=3"
+addopts = """-s \
+    --cov-report term-missing --cov=fseg \
+    --cov-fail-under=80 \
+    -rfE
+    """
+testpaths = [
+    "tests",
+    ]
+
+
 [tool.cibuildwheel]
 skip = "cp36-* cp37-* pp* *-manylinux_i686 *_aarch64 *_ppc64le *_s390x *-musllinux*"
 build-verbosity = "3"

@@ -42,7 +42,7 @@ jobs:
       - name: Test using pytest
         run: |
           python -m pip install --force-reinstall `find dist -name "*.whl"`
-          python -m pytest -s --cov-report term-missing --cov-fail-under=80 --cov=fseg tests
+          python -m pytest
 
   publish_testpypi:
     name: Publish Python 🐍 sdist 📦 to TestPyPI
