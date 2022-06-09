@@ -8,8 +8,9 @@ required_plugins = "pytest-cov>=3"
 addopts = """-s \
     --cov-report term-missing --cov=fseg \
     --cov-fail-under=80 \
-    -rfE
+    -rfExXs
     """
+xfail_strict=true
 testpaths = [
     "tests",
     ]
