@@ -33,7 +33,7 @@ jobs:
         run: |
           python -m pip install --upgrade pip
           python -m pip install build
-          python -m pip install pytest
+          python -m pip install pytest pytest-cov
 
       - name: Build Package with Extension
         run: |
@@ -42,7 +42,7 @@ jobs:
       - name: Test using pytest
         run: |
           python -m pip install --force-reinstall `find dist -name "*.whl"`
-          python -m pytest -s -vv
+          python -m pytest -s --cov-report term-missing --cov-fail-under=80 --cov=fseg tests
 
   publish_testpypi:
     name: Publish Python 🐍 sdist 📦 to TestPyPI
