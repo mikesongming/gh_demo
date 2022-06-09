@@ -53,7 +53,7 @@ jobs:
           cov.load()
           stmt_cov_to_display = int(cov.json_report())
           with open(os.environ['GITHUB_ENV'], 'a') as env_file:
-            env_file.write(f"STMT_COV={stmt_cov_to_display}")
+            env_file.write(f"STMT_COV={stmt_cov_to_display}%")
 
       - name: Create Awesome Badge
         uses: schneegans/dynamic-badges-action@v1.4.0
