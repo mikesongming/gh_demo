@@ -43,6 +43,28 @@ jobs:
         run: |
           python -m pip install --force-reinstall `find dist -name "*.whl"`
           python -m pytest
+      
+      - name: Report Coverage
+        shell: python
+        run: |
+          import os
+          from coverage import Coverage
+          cov = Coverage()
+          cov.load()
+          stmt_cov_to_display = int(cov.json_report())
+          with open(os.environ['GITHUB_ENV'], 'a') as env_file:
+            env_file.write(f"STMT_COV={stmt_cov_to_display}")
+
+      - name: Create Awesome Badge
+        uses: schneegans/dynamic-badges-action@v1.4.0
+        with:
+          auth: ${{ secrets.GIST_TOKEN }}
+          gistID: dd3e15d244cda22f8a22b79ba575448d
+          filename: gh_demo_ci.json
+          label: coverage
+          message: ${{ env.STMT_COV }}
+          color: orange
+
 
   publish_testpypi:
     name: Publish Python 🐍 sdist 📦 to TestPyPI
