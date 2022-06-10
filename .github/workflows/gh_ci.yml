@@ -2,9 +2,11 @@ name: Continuous Integration of Pybind11 Extension Package
 
 on:
   push:
-    branches: [master, main, dev*]
+    branches: ['master', 'main', 'dev*']
   pull_request:
-    branches: [master, main, dev*]
+    branches: ['master', 'main', 'dev*']
+    types:
+      - opened
   workflow_dispatch:
 
 defaults:
