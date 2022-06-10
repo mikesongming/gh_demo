@@ -5,9 +5,9 @@ build-backend = "setuptools.build_meta"
 [tool.pytest.ini_options]
 minversion = "7.1"
 required_plugins = "pytest-cov>=3"
-addopts = """-s \
+addopts = """-s --cache-clear \
     --cov-report term-missing --cov=fseg \
-    --cov-fail-under=80 \
+    --cov-fail-under=80 --cov-branch \
     -rfExXs
     """
 xfail_strict=true

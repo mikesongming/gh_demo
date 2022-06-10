@@ -42,7 +42,8 @@ jobs:
       - name: Test using pytest
         run: |
           python -m pip install --force-reinstall `find dist -name "*.whl"`
-          python -m pytest
+          python -m pytest -v --no-summary
+          python -m coverage report
       
       - name: Report Coverage
         shell: python
@@ -52,6 +53,7 @@ jobs:
           cov = Coverage()
           cov.load()
           stmt_cov_to_display = int(cov.json_report())
+          print(f"Statement Coverage: {stmt_cov_to_display}%")
           with open(os.environ['GITHUB_ENV'], 'a') as env_file:
             env_file.write(f"STMT_COV={stmt_cov_to_display}%")
 
@@ -65,6 +67,20 @@ jobs:
           message: ${{ env.STMT_COV }}
           color: orange
 
+      - uses: jwalton/gh-find-current-pr@v1
+        id: findPr
+
+      - run: echo "Your PR is ${PR}"
+        if: success() && steps.findPr.outputs.number
+        env:
+          PR: ${{ steps.findPr.outputs.pr }}
+      
+      - name: Comment Pytest Report on PR report
+        if: github.event.pull_request
+        run: |
+          echo "Header:", ${{ github.event.pull_request.header }}
+          echo "URL:", ${{ github.event.pull_request.html_url }}
+          echo "Number:", ${{ github.event.pull_request.number }}
 
   publish_testpypi:
     name: Publish Python 🐍 sdist 📦 to TestPyPI

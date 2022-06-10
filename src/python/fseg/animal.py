@@ -1,5 +1,8 @@
 from ._fseg import Pet
 from ._fseg import Animal, Dog
 
-def dog_go(steps: int):
-    return Dog().go(steps)
+def go(kind: str, steps: int):
+    if kind.lower() == 'dog':
+        return Dog().go(steps)
+    else:
+        return Animal().go(steps)
