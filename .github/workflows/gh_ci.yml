@@ -47,9 +47,10 @@ jobs:
         id: testing
         run: |
           python -m pip install --force-reinstall `find dist -name "*.whl"`
-          echo "::set-output name=tests::$(python -m pytest -v --no-summary)"
-          echo "::set-output name=coverage::$(python -m coverage report)"
-      
+          echo "Tests Result\n" > tests_result.txt
+          python -m pytest -v --no-header --no-summary >> tests_result.txt
+          python -m coverage report >> tests_result.txt
+
       - name: Report Coverage
         shell: python
         run: |
@@ -77,12 +78,9 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           PR_NUMBER: ${{ github.event.pull_request.number }}
-          TESTS: ${{ steps.testing.outputs.tests }}
-          COVERAGE: ${{ steps.testing.outputs.coverage }}
         run: |
           echo "PR URL:", ${{ github.event.pull_request.html_url }}
-          gh pr comment $PR_NUMBER --body "# TESTS RESULT \n ${TESTS}"
-          gh pr comment $PR_NUMBER --body "# CODE COVERAGE \n ${COVERAGE}"
+          gh pr comment $PR_NUMBER --body-file ./tests_result.txt
 
   publish_testpypi:
     name: Publish Python 🐍 sdist 📦 to TestPyPI
