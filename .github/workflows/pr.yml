@@ -19,18 +19,9 @@ jobs:
 
       - name: Comment Pytest Report on PR report
         if: github.event.pull_request
-        run: |
-          echo "Header:", ${{ github.event.pull_request.header }}
-          echo "URL:", ${{ github.event.pull_request.html_url }}
-          echo "Number:", ${{ github.event.pull_request.number }}
-     
-      - uses: khan/pull-request-comment-trigger@v1.1.0
-        id: check
-        with:
-          trigger: '@deploy'
-          reaction: rocket
         env:
-          GITHUB_TOKEN: '${{ secrets.GITHUB_TOKEN }}'
-
-      - run: 'echo Found it!'
-        if: steps.check.outputs.triggered == 'true'
+          PR_NUMBER: ${{ github.event.pull_request.number }}
+        run: |
+          echo "Header SHA:", ${{ github.event.pull_request.header.sha }}
+          echo "URL:", ${{ github.event.pull_request.html_url }}
+          gh pr comment $PR_NUMBER --body 'action result to review @demo'
