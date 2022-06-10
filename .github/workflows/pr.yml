@@ -20,6 +20,7 @@ jobs:
       - name: Comment Pytest Report on PR report
         if: github.event.pull_request
         env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           PR_NUMBER: ${{ github.event.pull_request.number }}
         run: |
           echo "URL:", ${{ github.event.pull_request.html_url }}
