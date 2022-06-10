@@ -14,12 +14,31 @@ jobs:
   deploy:
     runs-on: ubuntu-latest
     steps:
-      - uses: khan/pull-request-comment-trigger@v1.1.0
-        id: check
-        with:
-          trigger: '@deploy'
-          reaction: rocket
+      - name: Checkout
+        uses: actions/checkout@v3
+
+      - name: Comment Pytest Report on PR report
+        if: github.event.pull_request
+        run: |
+          echo "Header:", ${{ github.event.pull_request.header }}
+          echo "URL:", ${{ github.event.pull_request.html_url }}
+          echo "Number:", ${{ github.event.pull_request.number }}
+          
+      - uses: jwalton/gh-find-current-pr@v1
+        id: findPr
+
+      - run: echo "Your PR is ${PR}"
+        if: success() && steps.findPr.outputs.number
         env:
-          GITHUB_TOKEN: '${{ secrets.GITHUB_TOKEN }}'
-      - run: 'echo Found it!'
-        if: steps.check.outputs.triggered == 'true'
+          PR: ${{ steps.findPr.outputs.pr }}
+      
+      # - uses: khan/pull-request-comment-trigger@v1.1.0
+      #   id: check
+      #   with:
+      #     trigger: '@deploy'
+      #     reaction: rocket
+      #   env:
+      #     GITHUB_TOKEN: '${{ secrets.GITHUB_TOKEN }}'
+
+      # - run: 'echo Found it!'
+      #   if: steps.check.outputs.triggered == 'true'
