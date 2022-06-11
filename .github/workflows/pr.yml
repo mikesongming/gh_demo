@@ -1,0 +1,27 @@
+name: PR Actions Demo
+
+defaults:
+  run:
+    shell: bash
+
+on:
+  pull_request:
+    types: [opened, reopened]
+  issue_comment:
+    types: [created]
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+
+      - name: Comment Pytest Report on PR report
+        if: github.event.pull_request
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          PR_NUMBER: ${{ github.event.pull_request.number }}
+        run: |
+          echo "URL:", ${{ github.event.pull_request.html_url }}
+          gh pr comment $PR_NUMBER --body 'action result to review @demo'

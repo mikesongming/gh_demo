@@ -3,7 +3,6 @@ project(FSEG)
 
 # set(CMAKE_CXX_STANDARD 14)
 if (MSVC)
-    message(STATUS "_MSVC_VER: ${MSVC_VERSION}")
     # /Zc:preprocessor enables a token-based preprocessor that conforms to C99 and C++11 and later standards
     # /Zc:preprocessor option is available starting with VS2019 version 16.5
     # (according to https://docs.microsoft.com/en-us/cpp/build/reference/zc-preprocessor)

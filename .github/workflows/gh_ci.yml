@@ -1,10 +1,13 @@
-name: Continuous Integration of Python Pybind11 Extension Package
+name: Continuous Integration of Pybind11 Extension Package
 
 on:
-  push:
-    branches: [master, main, dev*]
+  # push:
+  #   branches: [master, main, dev*]
   pull_request:
     branches: [master, main, dev*]
+    types:
+      - opened
+      - reopened
   workflow_dispatch:
 
 defaults:
@@ -14,11 +17,12 @@ defaults:
 jobs:
   build_test:
     name: Build and Test
-    if: "contains(github.event.head_commit.message, '[ci]')"
+    # if: "contains(github.event.head_commit.message, '[ci]')"
     strategy:
       matrix:
         os: [ubuntu-latest, macos-latest, windows-latest]
-        python: ["3.9", "3.10"]
+        # python: ["3.9", "3.10"]
+        python: ["3.10"]
     runs-on: ${{matrix.os}}
     steps:
       - name: Checkout
@@ -33,16 +37,46 @@ jobs:
         run: |
           python -m pip install --upgrade pip
           python -m pip install build
-          python -m pip install pytest
+          python -m pip install pytest pytest-cov
 
       - name: Build Package with Extension
         run: |
           python -m build -w
 
       - name: Test using pytest
+        id: testing
         run: |
           python -m pip install --force-reinstall `find dist -name "*.whl"`
-          python -m pytest -s -vv
+          python -m pytest --junitxml=pytest.xml | tee pytest-coverage.txt
+
+      - name: Pytest coverage comment
+        uses: MishaKav/pytest-coverage-comment@v1.1.28
+        with:
+          pytest-coverage-path: ./pytest-coverage.txt
+          junitxml-path: ./pytest.xml
+
+      - name: Report Coverage
+        shell: python
+        run: |
+          import os
+          from coverage import Coverage
+          cov = Coverage()
+          cov.load()
+          stmt_cov_to_display = int(cov.json_report())
+          print(f"Statement Coverage: {stmt_cov_to_display}%")
+          with open(os.environ['GITHUB_ENV'], 'a') as env_file:
+            env_file.write(f"STMT_COV={stmt_cov_to_display}%")
+
+      - name: Create Awesome Badge
+        uses: schneegans/dynamic-badges-action@v1.4.0
+        with:
+          auth: ${{ secrets.GIST_TOKEN }}
+          gistID: dd3e15d244cda22f8a22b79ba575448d
+          filename: gh_demo_ci.json
+          label: coverage
+          message: ${{ env.STMT_COV }}
+          color: orange
+
 
   publish_testpypi:
     name: Publish Python 🐍 sdist 📦 to TestPyPI

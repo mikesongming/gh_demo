@@ -1,10 +1,10 @@
 name: CIBW on Python Extension Packaging
 
 on:
-  push:
-    branches: [master, main, dev*]
-  pull_request:
-    branches: [master, main, dev*]
+  # push:
+  #   branches: [master, main, dev*]
+  # pull_request:
+  #   branches: [master, main, dev*]
   workflow_dispatch:
 
 defaults:
