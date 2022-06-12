@@ -1,4 +1,4 @@
-name: Continuous Integration of Pybind11 Extension Package
+name: CI-${{github.ref_name}}
 
 on:
   # push:
