@@ -51,17 +51,6 @@ jobs:
           python -m pip install --force-reinstall `find dist -name "*.whl"`
           # python -m pytest --junitxml=pytest.xml | tee pytest-coverage.txt
           python -m pytest --junit-xml unit.xml --cov-report xml
-          rm dist/*.whl
-
-      - name: Publish package to TestPyPI
-        if: ${{ success() && matrix.os == 'ubuntu-latest' && matrix.python == '3.10' }}
-        uses: pypa/gh-action-pypi-publish@release/v1
-        with:
-          user: __token__
-          password: ${{ secrets.TEST_PYPI_API_TOKEN }}
-          repository_url: https://test.pypi.org/legacy/
-          skip_existing: true
-          print_hash: true
 
       - name: Test Reports
         uses: xportation/junit-coverage-report@v1.0.0
