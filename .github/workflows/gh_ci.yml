@@ -46,7 +46,7 @@ jobs:
 
       - name: Test using pytest
         id: testing
-        # continue-on-error: true
+        continue-on-error: true
         run: |
           python -m pip install --force-reinstall `find dist -name "*.whl"`
           # python -m pytest --junitxml=pytest.xml | tee pytest-coverage.txt
