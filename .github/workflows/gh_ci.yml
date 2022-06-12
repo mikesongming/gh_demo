@@ -46,11 +46,12 @@ jobs:
 
       - name: Test using pytest
         id: testing
-        continue-on-error: true
+        # continue-on-error: true
         run: |
           python -m pip install --force-reinstall `find dist -name "*.whl"`
           # python -m pytest --junitxml=pytest.xml | tee pytest-coverage.txt
           python -m pytest --junit-xml unit.xml --cov-report xml
+          rm dist/*.whl
 
       - name: Publish package to TestPyPI
         if: ${{ success() && matrix.os == 'ubuntu-latest' && matrix.python == '3.10' }}
