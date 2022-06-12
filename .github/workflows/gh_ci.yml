@@ -42,15 +42,18 @@ jobs:
 
       - name: Build Package with Extension
         run: |
-          python -m build -w
+          python -m build
+          python -m pip install --force-reinstall `find dist -name "*.whl"`
+          rm -f dist/*.whl
 
       - name: Test using pytest
         id: testing
         continue-on-error: true
         run: |
-          python -m pip install --force-reinstall `find dist -name "*.whl"`
           # python -m pytest --junitxml=pytest.xml | tee pytest-coverage.txt
           python -m pytest --junit-xml unit.xml --cov-report xml
+          cat coverage.xml
+          cat unit.xml
 
       - name: Test Reports
         uses: xportation/junit-coverage-report@v1.0.0
