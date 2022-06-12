@@ -53,14 +53,15 @@ jobs:
           # python -m pytest --junitxml=pytest.xml | tee pytest-coverage.txt
           python -m pytest --junit-xml unit.xml --cov-report xml
       
-      - name: debugging
-        run: |
-          echo "-- COVERAGE --"
-          cat coverage.xml
-          echo "-- UNIT --"
-          cat unit.xml
+      # - name: debugging
+      #   run: |
+      #     echo "-- COVERAGE --"
+      #     cat coverage.xml
+      #     echo "-- UNIT --"
+      #     cat unit.xml
 
       - name: Test Reports
+        if: github.event.pull_request
         uses: xportation/junit-coverage-report@v1.0.0
         with:
           junit-path: ./unit.xml  
