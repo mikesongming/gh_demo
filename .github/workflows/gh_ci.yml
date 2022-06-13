@@ -103,10 +103,7 @@ jobs:
           filename: gh_demo_ci.json
           label: coverage
           message: ${{ steps.coverageComment.outputs.coverage }}
-          valColorRange: ${{ steps.coverageComment.outputs.coverage }}
-          maxColorRange: 100
-          minColorRange: 0
-          # color: orange
+          color: ${{ steps.coverageComment.outputs.color }}
 
       # - name: Update Readme with Coverage Html
       #   if: ${{ matrix.os == 'ubuntu-latest' }}
