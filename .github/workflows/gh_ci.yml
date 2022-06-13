@@ -76,7 +76,7 @@ jobs:
           # pytest-coverage-path: ./coverage.txt
           # junitxml-path: ./unit.xml
           # junitxml-title: My JUnit Xml Summary Title
-          create-new-comment: true
+          # create-new-comment: true
           multiple-files: |
             My Title 1, ./coverage.txt, ./unit.xml
 
