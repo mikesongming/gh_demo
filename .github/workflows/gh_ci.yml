@@ -69,34 +69,50 @@ jobs:
           python -m pytest --junitxml=unit.xml | tee coverage.txt
 
       - name: Pytest coverage comment
-        if: github.event.pull_request
+        id: coverageComment
+        if: ${{ github.event.pull_request && matrix.os == 'ubuntu-latest' }}
         uses: MishaKav/pytest-coverage-comment@main
         with:
           pytest-coverage-path: ./coverage.txt
           junitxml-path: ./unit.xml
           junitxml-title: My JUnit Xml Summary Title
 
-      - name: Report Coverage
-        shell: python
+      - name: Check the output coverage
+        if: ${{ github.event.pull_request && matrix.os == 'ubuntu-latest' }}
         run: |
-          import os
-          from coverage import Coverage
-          cov = Coverage()
-          cov.load()
-          stmt_cov_to_display = int(cov.json_report())
-          print(f"Statement Coverage: {stmt_cov_to_display}%")
-          with open(os.environ['GITHUB_ENV'], 'a') as env_file:
-            env_file.write(f"STMT_COV={stmt_cov_to_display}%")
+          echo "Coverage Percantage - ${{ steps.coverageComment.outputs.coverage }}"
+          echo "Coverage Color - ${{ steps.coverageComment.outputs.color }}"
+          echo "Coverage Html - ${{ steps.coverageComment.outputs.coverageHtml }}"
+          echo "Summary Report - ${{ steps.coverageComment.outputs.summaryReport }}"
+          echo "Coverage Warnings - ${{ steps.coverageComment.outputs.warnings }}"
+          echo "Coverage Errors - ${{ steps.coverageComment.outputs.errors }}"
+          echo "Coverage Failures - ${{ steps.coverageComment.outputs.failures }}"
+          echo "Coverage Skipped - ${{ steps.coverageComment.outputs.skipped }}"
+          echo "Coverage Tests - ${{ steps.coverageComment.outputs.tests }}"
+          echo "Coverage Time - ${{ steps.coverageComment.outputs.time }}"
+          echo "Not Success Test Info - ${{ steps.coverageComment.outputs.notSuccessTestInfo }}"
 
-      - name: Create Awesome Badge
-        uses: schneegans/dynamic-badges-action@v1.4.0
-        with:
-          auth: ${{ secrets.GIST_TOKEN }}
-          gistID: dd3e15d244cda22f8a22b79ba575448d
-          filename: gh_demo_ci.json
-          label: coverage
-          message: ${{ env.STMT_COV }}
-          color: orange
+      # - name: Report Coverage
+      #   shell: python
+      #   run: |
+      #     import os
+      #     from coverage import Coverage
+      #     cov = Coverage()
+      #     cov.load()
+      #     stmt_cov_to_display = int(cov.json_report())
+      #     print(f"Statement Coverage: {stmt_cov_to_display}%")
+      #     with open(os.environ['GITHUB_ENV'], 'a') as env_file:
+      #       env_file.write(f"STMT_COV={stmt_cov_to_display}%")
+
+      # - name: Create Awesome Badge
+      #   uses: schneegans/dynamic-badges-action@v1.4.0
+      #   with:
+      #     auth: ${{ secrets.GIST_TOKEN }}
+      #     gistID: dd3e15d244cda22f8a22b79ba575448d
+      #     filename: gh_demo_ci.json
+      #     label: coverage
+      #     message: ${{ env.STMT_COV }}
+      #     color: orange
 
 
   # publish_testpypi:
