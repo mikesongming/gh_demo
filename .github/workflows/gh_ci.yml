@@ -41,7 +41,6 @@ jobs:
           python -m pip install pytest pytest-cov
 
       - name: Build Package with Extension
-        if: "contains(github.event.head_commit.message, '[ci]')"
         run: |
           python -m build
           python -m pip install --force-reinstall `find dist -name "*.whl"`
@@ -50,7 +49,6 @@ jobs:
       - name: Test using pytest
         id: testing
         continue-on-error: true
-        if: "contains(github.event.head_commit.message, '[ci]')"
         run: |
           # python -m pytest --junitxml=pytest.xml | tee pytest-coverage.txt
           python -m pytest --junit-xml unit.xml --cov-report xml
