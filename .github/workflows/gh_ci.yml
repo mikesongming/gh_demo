@@ -46,26 +46,33 @@ jobs:
           python -m pip install --force-reinstall `find dist -name "*.whl"`
           rm -f dist/*.whl
 
+      # - name: Test using pytest
+      #   id: testing
+      #   continue-on-error: true
+      #   run: |
+      #     python -m pytest --junit-xml unit.xml --cov-report xml
+
+      # - name: Test Reports
+      #   if: github.event.pull_request
+      #   uses: xportation/junit-coverage-report@v1.0.0
+      #   with:
+      #     junit-path: ./unit.xml  
+      #     coverage-path: ./coverage.xml
+
       - name: Test using pytest
         id: testing
         continue-on-error: true
         run: |
-          # python -m pytest --junitxml=pytest.xml | tee pytest-coverage.txt
-          python -m pytest --junit-xml unit.xml --cov-report xml
-      
-      # - name: debugging
-      #   run: |
-      #     echo "-- COVERAGE --"
-      #     cat coverage.xml
-      #     echo "-- UNIT --"
-      #     cat unit.xml
+          python -m pytest --junitxml=unit.xml | tee coverage.txt
 
-      - name: Test Reports
-        if: github.event.pull_request
-        uses: xportation/junit-coverage-report@v1.0.0
+      - name: Pytest coverage comment
+        uses: MishaKav/pytest-coverage-comment@main
         with:
-          junit-path: ./unit.xml  
-          coverage-path: ./coverage.xml
+          pytest-coverage-path: ./coverage.txt
+          title: My Coverage Report Title
+          badge-title: My Badge Coverage Title
+          junitxml-path: ./unit.xml
+          junitxml-title: My JUnit Xml Summary Title
 
       - name: Report Coverage
         shell: python
