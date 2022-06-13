@@ -93,7 +93,7 @@ jobs:
           echo "Not Success Test Info - ${{ steps.coverageComment.outputs.notSuccessTestInfo }}"
 
       - name: Update Readme with Coverage Html
-        if: ${{ github.ref == 'refs/heads/main' }}
+        # if: ${{ github.ref == 'refs/heads/main' }}
         run: |
           sed -i '/<!-- Pytest Coverage Comment:Begin -->/,/<!-- Pytest Coverage Comment:End -->/c\<!-- Pytest Coverage Comment:Begin -->\n\${{ steps.coverageComment.outputs.coverageHtml }}\n<!-- Pytest Coverage Comment:End -->' ./README.md
 
@@ -103,6 +103,17 @@ jobs:
         with:
           message: Update coverage on Readme
           github_token: ${{ github.token }}
+
+      - name: Publish package to TestPyPI
+        if: ${{ steps.coverageComment.outputs.errors == '0' && matrix.os == 'ubuntu-latest' }}
+        uses: pypa/gh-action-pypi-publish@release/v1
+        with:
+          user: __token__
+          password: ${{ secrets.TEST_PYPI_API_TOKEN }}
+          repository_url: https://test.pypi.org/legacy/
+          skip_existing: true
+          print_hash: true
+
 
       # - name: Report Coverage
       #   shell: python
