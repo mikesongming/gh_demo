@@ -66,11 +66,10 @@ jobs:
           python -m pytest --junitxml=unit.xml | tee coverage.txt
 
       - name: Pytest coverage comment
+        if: github.event.pull_request
         uses: MishaKav/pytest-coverage-comment@main
         with:
           pytest-coverage-path: ./coverage.txt
-          title: My Coverage Report Title
-          badge-title: My Badge Coverage Title
           junitxml-path: ./unit.xml
           junitxml-title: My JUnit Xml Summary Title
 
