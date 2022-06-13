@@ -7,4 +7,4 @@ def test_animal():
     animal.go("CAT", 1)
 
 def test_dog():
-    assert animal.go("DOG", 1) == "woof!"
+    assert animal.go("DOG", 1) == "woof! "
