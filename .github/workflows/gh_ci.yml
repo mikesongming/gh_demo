@@ -73,12 +73,12 @@ jobs:
         if: ${{ github.event.pull_request && matrix.os == 'ubuntu-latest' }}
         uses: MishaKav/pytest-coverage-comment@main
         with:
-          # pytest-coverage-path: ./coverage.txt
-          # junitxml-path: ./unit.xml
-          # junitxml-title: My JUnit Xml Summary Title
+          pytest-coverage-path: ./coverage.txt
+          junitxml-path: ./unit.xml
+          junitxml-title: My JUnit Xml Summary Title
           # create-new-comment: true
-          multiple-files: |
-            My Title 1, ./coverage.txt, ./unit.xml
+          # multiple-files: |
+          #   My Title 1, ./coverage.txt, ./unit.xml
 
       - name: Check the output coverage
         if: ${{ github.event.pull_request && matrix.os == 'ubuntu-latest' }}
