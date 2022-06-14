@@ -1,0 +1,21 @@
+# run unit tests and collect coverage data
+
+on:
+  workflow_call:
+    inputs:
+      username:
+        description: 'A username passed from the caller workflow'
+        default: 'john-doe'
+        required: true
+        type: string  # boolean, number
+    secrets:
+      envPAT:
+        description: 'A username passed from the caller workflow'
+        required: true
+    outputs:
+      workflow_output1:
+        description: "The first job output"
+        value: ${{ jobs.my_job.outputs.job_output1 }}
+      workflow_output2:
+        description: "The second job output"
+        value: ${{ jobs.my_job.outputs.job_output2 }}

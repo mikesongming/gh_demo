@@ -1,0 +1,11 @@
+name: ci
+
+on:
+  workflow_dispatch:
+
+jobs:
+  test_build:
+    uses: ./.github/workflows/build.yml 
+    with:
+      need_wheel: true
+      need_sdist: true

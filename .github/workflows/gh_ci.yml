@@ -1,16 +1,16 @@
 name: ci
 
 on:
-  push:
-    branches: [master, main, dev*]
-    paths:
-      - 'src/*'
-      - 'tests/*'
-  pull_request:
-    branches: [master, main, dev*]
-    types:
-      - opened
-      - reopened
+  # push:
+  #   branches: [master, main, dev*]
+  #   paths:
+  #     - 'src/*'
+  #     - 'tests/*'
+  # pull_request:
+  #   branches: [master, main, dev*]
+  #   types:
+  #     - opened
+  #     - reopened
   workflow_dispatch:
 
 defaults:
@@ -23,10 +23,8 @@ jobs:
     # if: "contains(github.event.head_commit.message, '[ci]')"
     strategy:
       matrix:
-        # os: [ubuntu-latest, macos-latest, windows-latest]
-        # python: ["3.9", "3.10"]
-        os: [ubuntu-latest]
-        python: ["3.10"]
+        os: [ubuntu-latest, macos-latest, windows-latest]
+        python: ["3.9", "3.10"]
     runs-on: ${{matrix.os}}
     steps:
       - name: Checkout
@@ -48,19 +46,6 @@ jobs:
           python -m build
           python -m pip install --force-reinstall `find dist -name "*.whl"`
           rm -f dist/*.whl
-
-      # - name: Test using pytest
-      #   id: testing
-      #   continue-on-error: true
-      #   run: |
-      #     python -m pytest --junit-xml unit.xml --cov-report xml
-
-      # - name: Test Reports
-      #   if: github.event.pull_request
-      #   uses: xportation/junit-coverage-report@v1.0.0
-      #   with:
-      #     junit-path: ./unit.xml  
-      #     coverage-path: ./coverage.xml
 
       - name: Test using pytest
         id: testing
@@ -105,19 +90,6 @@ jobs:
           message: ${{ steps.coverageComment.outputs.coverage }}
           color: ${{ steps.coverageComment.outputs.color }}
 
-      # - name: Update Readme with Coverage Html
-      #   if: ${{ matrix.os == 'ubuntu-latest' }}
-      #   # if: ${{ github.ref == 'refs/heads/main' }}
-      #   run: |
-      #     sed -i '/<!-- Pytest Coverage Comment:Begin -->/,/<!-- Pytest Coverage Comment:End -->/c\<!-- Pytest Coverage Comment:Begin -->\n\${{ steps.coverageComment.outputs.coverageHtml }}\n<!-- Pytest Coverage Comment:End -->' ./README.md
-
-      # - name: Commit & Push changes to Readme
-      #   if: ${{ matrix.os == 'ubuntu-latest' }}
-      #   # if: ${{ github.ref == 'refs/heads/main' }}
-      #   uses: actions-js/push@master
-      #   with:
-      #     message: Update coverage on Readme
-      #     github_token: ${{ github.token }}
 
       - name: Publish package to TestPyPI
         if: ${{ steps.coverageComment.outputs.errors == '0' && matrix.os == 'ubuntu-latest' }}
@@ -128,29 +100,6 @@ jobs:
           repository_url: https://test.pypi.org/legacy/
           skip_existing: true
           print_hash: true
-
-
-      # - name: Report Coverage
-      #   shell: python
-      #   run: |
-      #     import os
-      #     from coverage import Coverage
-      #     cov = Coverage()
-      #     cov.load()
-      #     stmt_cov_to_display = int(cov.json_report())
-      #     print(f"Statement Coverage: {stmt_cov_to_display}%")
-      #     with open(os.environ['GITHUB_ENV'], 'a') as env_file:
-      #       env_file.write(f"STMT_COV={stmt_cov_to_display}%")
-
-      # - name: Create Awesome Badge
-      #   uses: schneegans/dynamic-badges-action@v1.4.0
-      #   with:
-      #     auth: ${{ secrets.GIST_TOKEN }}
-      #     gistID: dd3e15d244cda22f8a22b79ba575448d
-      #     filename: gh_demo_ci.json
-      #     label: coverage
-      #     message: ${{ env.STMT_COV }}
-      #     color: orange
 
 
   # publish_testpypi:
@@ -174,12 +123,3 @@ jobs:
   #     - name: Build sdist Package with Extension
   #       run: |
   #         python -m build -s
-
-  #     - name: Publish package to TestPyPI
-  #       uses: pypa/gh-action-pypi-publish@release/v1
-  #       with:
-  #         user: __token__
-  #         password: ${{ secrets.TEST_PYPI_API_TOKEN }}
-  #         repository_url: https://test.pypi.org/legacy/
-  #         skip_existing: true
-  #         print_hash: true
