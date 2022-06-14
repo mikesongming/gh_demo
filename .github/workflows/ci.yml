@@ -12,8 +12,9 @@ jobs:
   
   debug:
     runs-on: ubuntu-latest
+    needs: test_build
     steps:
       - run: |
-        echo ${{ test_build.outputs.sdist_artifact }}
-        echo ${{ test_build.outputs.pkg_name }}
-        echo ${{ test_build.outputs.pkg_version }}
+        echo ${{ needs.test_build.outputs.sdist_artifact }}
+        echo ${{ needs.test_build.outputs.pkg_name }}
+        echo ${{ needs.test_build.outputs.pkg_version }}
