@@ -71,7 +71,7 @@ jobs:
           retention-days: 3
 
   build_sdist:
-    name: Publish Python 🐍 sdist 📦
+    name: 📦 build sdist
     if: ${{ inputs.need_sdist }}
     runs-on: ubuntu-latest
     outputs:

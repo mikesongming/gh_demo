@@ -7,7 +7,7 @@ jobs:
   test_build:
     uses: ./.github/workflows/build.yml 
     with:
-      need_wheel: false
+      need_wheel: true
       need_sdist: true
   
   debug:
