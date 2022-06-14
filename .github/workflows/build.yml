@@ -13,6 +13,9 @@ on:
         required: false
         type: boolean
     outputs:
+      wheels_artifact:
+        description: artifact name of wheels
+        value: ${{ jobs.build_wheels.outputs.wheels_artifact }}
       sdist_artifact:
         description: artifact name of sdist
         value: ${{ jobs.build_sdist.outputs.sdist_artifact }}
@@ -32,16 +35,20 @@ jobs:
     name: CIBW (${{matrix.buildplat[0]}}_${{matrix.python}})
     if: ${{ inputs.need_wheel }}
     runs-on: ${{ matrix.buildplat[0] }}
+    outputs:
+      wheels_artifact:    ${{ steps.save.outputs.wheels_artifact }}
+      pkg_name:    ${{ steps.save.outputs.pkg_name }}
+      pkg_version: ${{ steps.save.outputs.pkg_version }}
     strategy:
       fail-fast: false
       matrix:
         buildplat:
           - [ubuntu-18.04, manylinux_x86_64]
-          # - [ubuntu-20.04, manylinux_x86_64]
+          - [ubuntu-20.04, manylinux_x86_64]
           - [macos-11, macosx_x86_64]
-          # - [macos-12, macosx_x86_64]
+          - [macos-12, macosx_x86_64]
           - [windows-2019, win_amd64]
-          # - [windows-2022, win_amd64]
+          - [windows-2022, win_amd64]
         python: 
           # - 'cp39'
           - 'cp310'
@@ -58,17 +65,27 @@ jobs:
         uses: pypa/cibuildwheel@v2.6.0
         env:
           CIBW_BUILD: ${{ matrix.python }}-${{ matrix.buildplat[1] }}
-          # CIBW_SKIP: "*-win32 *-manylinux_i686 *-musllinux* *_arm64"
           CIBW_TEST_REQUIRES: pytest pytest-cov
-          CIBW_TEST_COMMAND: pytest -s -v {package}/tests
+          CIBW_TEST_COMMAND: pytest -v {package}/tests
+
+      - name: Extract wheel package info
+        run: |
+          bash .github/scripts/extract_wheel_info.sh
 
       - name: Upload wheels as Artifact
         if: ${{ success() }}
         uses: actions/upload-artifact@v3
         with:
-          name: wheels
+          name: wheels_${{ env.pkg_tag }}
           path: wheelhouse
           retention-days: 3
+
+      - name: Write outputs 
+        id: save
+        run: |
+          echo "::set-output name=wheels_artifact::wheels_${{ env.pkg_tag }}"
+          echo "::set-output name=pkg_name::"${{ env.pkg_name }}
+          echo "::set-output name=pkg_version::"${{ env.pkg_version }}
 
   build_sdist:
     name: 📦 build sdist
@@ -96,7 +113,7 @@ jobs:
         run: |
           python -m build -s
       
-      - name: Extract package info
+      - name: Extract sdist package info
         run: |
           bash .github/scripts/extract_sdist_info.sh
 
