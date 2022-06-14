@@ -41,8 +41,8 @@ jobs:
           # - [macos-12, macosx_x86_64]
           - [windows-2019, win_amd64]
         python: 
-          # - 'cp39'
-          - 'cp310'
+          - 'cp39'
+          # - 'cp310'
     steps:
       - name: Checkout
         uses: actions/checkout@v3
