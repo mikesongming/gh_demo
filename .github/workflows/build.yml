@@ -89,6 +89,8 @@ jobs:
       - name: Download windows wheel
         uses: actions/download-artifact@v3
         with:
+          name: wheel_windows
+          path: wheelhouse
 
       - name: Upload collected wheels
         uses: actions/upload-artifact@v3
