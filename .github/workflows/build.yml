@@ -52,18 +52,23 @@ jobs:
         with:
           python-version: '3.x'
 
-      - name: Build wheels with CIBW
+      - name: Build wheel with CIBW
         uses: pypa/cibuildwheel@v2.6.0
         env:
           CIBW_BUILD: ${{ matrix.python }}-${{ matrix.buildplat[1] }}
           CIBW_TEST_REQUIRES: pytest pytest-cov
           CIBW_TEST_COMMAND: pytest -v {package}/tests
 
-      - name: Upload wheels as Artifact
+      - name: Upload wheel as Artifact
         if: ${{ success() }}
         uses: actions/upload-artifact@v3
         with:
-          name: wheels_${{ matrix.python }}-${{ matrix.buildplat[1] }}
+          name: >- 
+            wheel_${{ startsWith(matrix.buildplat[0], 'ubuntu') && 'linux' || 
+              (
+                startsWith(matrix.buildplat[0], 'macos') && 'macos' || 'windows'
+              )
+            }}
           path: wheelhouse/*.whl
           retention-days: 3
 

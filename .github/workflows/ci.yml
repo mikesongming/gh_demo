@@ -25,10 +25,26 @@ jobs:
           name: ${{ needs.test_build.outputs.sdist_artifact }}
           path: dist
 
-      - name: Download all workflow run artifacts
+      - name: Download linux wheel
         uses: actions/download-artifact@v3
         with:
+          name: wheel_linux
           path: wheelhouse
+
+      - name: Download macos wheel
+        uses: actions/download-artifact@v3
+        with:
+          name: wheel_macos
+          path: wheelhouse
+
+      - name: Download windows wheel
+        uses: actions/download-artifact@v3
+        with:
+          name: wheel_windows
+          path: wheelhouse
+
+      - name: Download all workflow run artifacts
+        uses: actions/download-artifact@v3
 
       - run: |
           ls -R
