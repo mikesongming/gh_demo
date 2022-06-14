@@ -1,4 +1,4 @@
-name: build source and wheel packages
+name: Build Source and Wheel Packages
 
 on:
   workflow_call:
@@ -101,7 +101,7 @@ jobs:
         if: ${{ success() }}
         uses: actions/upload-artifact@v3
         with:
-          # name: 'sdist'_${{ env.pkg_tag }}
+          name: sdist_${{ env.pkg_tag }}
           name: ${{ env.pkg_tag }}
           path: ${{ env.pkg_sdist }}
           retention-days: 3
