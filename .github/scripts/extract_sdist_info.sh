@@ -8,7 +8,7 @@ else
     return 1
 fi
 
-LATEST_PKG_TAG=`basename $LATEST_TAR_GZ | sed 's/.tar.gz//' | sed 's/_/-'`
+LATEST_PKG_TAG=`basename $LATEST_TAR_GZ | sed 's/.tar.gz//' | sed 's/_/-/'`
 
 LATEST_PKG_VERSION=`echo $LATEST_PKG_TAG | awk -F '-' '{print $NF}'`
 
