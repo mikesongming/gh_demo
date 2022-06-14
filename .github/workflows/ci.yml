@@ -28,6 +28,6 @@ jobs:
         uses: actions/download-artifact@v3
 
       - run: |
-          ls ./
+          [ -d 'dist' ] && ls dist/*
           ls sdist_*/*
           ls wheels_*/*
