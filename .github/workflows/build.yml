@@ -102,7 +102,6 @@ jobs:
         uses: actions/upload-artifact@v3
         with:
           name: sdist_${{ env.pkg_tag }}
-          name: ${{ env.pkg_tag }}
           path: ${{ env.pkg_sdist }}
           retention-days: 3
       
