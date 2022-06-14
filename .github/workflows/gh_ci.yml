@@ -1,4 +1,4 @@
-name: ci
+name: gh_ci
 
 on:
   # push:
