@@ -13,9 +13,6 @@ on:
         required: false
         type: boolean
     outputs:
-      sdist_artifact:
-        description: artifact name of sdist
-        value: ${{ jobs.build_sdist.outputs.sdist_artifact }}
       pkg_name:
         description: name of sdist
         value: ${{ jobs.build_sdist.outputs.pkg_name }}
@@ -41,8 +38,8 @@ jobs:
           # - [macos-12, macosx_x86_64]
           - [windows-2019, win_amd64]
         python: 
-          - 'cp39'
-          # - 'cp310'
+          # - 'cp39'
+          - 'cp310'
     steps:
       - name: Checkout
         uses: actions/checkout@v3
@@ -77,7 +74,6 @@ jobs:
     if: ${{ inputs.need_sdist }}
     runs-on: ubuntu-latest
     outputs:
-      sdist_artifact:    ${{ steps.save.outputs.sdist_artifact }}
       pkg_name:    ${{ steps.save.outputs.pkg_name }}
       pkg_version: ${{ steps.save.outputs.pkg_version }}
     steps:
@@ -106,13 +102,12 @@ jobs:
         if: ${{ success() }}
         uses: actions/upload-artifact@v3
         with:
-          name: sdist_${{ env.pkg_tag }}
+          name: sdist
           path: ${{ env.pkg_sdist }}
           retention-days: 3
       
       - name: Write outputs 
         id: save
         run: |
-          echo "::set-output name=sdist_artifact::sdist_${{ env.pkg_tag }}"
           echo "::set-output name=pkg_name::"${{ env.pkg_name }}
           echo "::set-output name=pkg_version::"${{ env.pkg_version }}

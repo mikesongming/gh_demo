@@ -43,8 +43,8 @@ jobs:
           name: wheel_windows
           path: wheelhouse
 
-      - name: Download all workflow run artifacts
-        uses: actions/download-artifact@v3
+      # - name: Download all workflow run artifacts
+      #   uses: actions/download-artifact@v3
 
       - run: |
           ls -R
