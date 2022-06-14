@@ -19,28 +19,16 @@ jobs:
           echo ${{ needs.test_build.outputs.pkg_name }}
           echo ${{ needs.test_build.outputs.pkg_version }}
       
-      - name: Download sdist artifact with name
+      - name: Download sdist
         uses: actions/download-artifact@v3
         with:
           name: sdist
           path: dist
 
-      - name: Download linux wheel
+      - name: Download all wheels
         uses: actions/download-artifact@v3
         with:
-          name: wheel_linux
-          path: wheelhouse
-
-      - name: Download macos wheel
-        uses: actions/download-artifact@v3
-        with:
-          name: wheel_macos
-          path: wheelhouse
-
-      - name: Download windows wheel
-        uses: actions/download-artifact@v3
-        with:
-          name: wheel_windows
+          name: wheels
           path: wheelhouse
 
       # - name: Download all workflow run artifacts

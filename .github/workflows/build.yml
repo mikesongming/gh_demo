@@ -25,7 +25,7 @@ defaults:
     shell: bash
 
 jobs:
-  build_wheels:
+  build_wheel:
     name: CIBW (${{matrix.buildplat[0]}}_${{matrix.python}})
     if: ${{ inputs.need_wheel }}
     runs-on: ${{ matrix.buildplat[0] }}
@@ -68,6 +68,42 @@ jobs:
             }}
           path: wheelhouse/*.whl
           retention-days: 3
+
+  collect_wheels:
+    if: ${{ inputs.need_wheel }}
+    runs-on: ubuntu-latest
+    needs: build_wheel
+    steps:
+      - name: Download linux wheel
+        uses: actions/download-artifact@v3
+        with:
+          name: wheel_linux
+          path: wheelhouse
+
+      - name: Download macos wheel
+        uses: actions/download-artifact@v3
+        with:
+          name: wheel_macos
+          path: wheelhouse
+
+      - name: Download windows wheel
+        uses: actions/download-artifact@v3
+        with:
+
+      - name: Upload collected wheels
+        uses: actions/upload-artifact@v3
+        with:
+          name: wheels
+          path: wheelhouse/*.whl
+          retention-days: 3
+
+      - uses: geekyeggo/delete-artifact@v1
+        with:
+          name: |
+            wheel_linux
+            wheel_macos
+            wheel_windows
+          failOnError: false
 
   build_sdist:
     name: 📦 build sdist
