@@ -1,4 +1,5 @@
-name: Build Source and Wheel Packages
+name: build
+description: Build Source and Wheel Packages
 
 on:
   workflow_call:
