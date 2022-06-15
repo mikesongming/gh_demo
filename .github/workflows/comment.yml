@@ -38,12 +38,12 @@ jobs:
           pytest-coverage-path: ./test_reports/coverage.txt
           junitxml-path: ./test_reports/unit.xml
 
-      - name: Create Awesome Badge
-        uses: schneegans/dynamic-badges-action@v1.4.0
-        with:
-          auth: ${{ secrets.GIST_TOKEN }}
-          gistID: dd3e15d244cda22f8a22b79ba575448d
-          filename: gh_demo_ci.json
-          label: coverage
-          message: ${{ steps.coverageComment.outputs.coverage }}
-          color: ${{ steps.coverageComment.outputs.color }}
+      # - name: Create Awesome Badge
+      #   uses: schneegans/dynamic-badges-action@v1.4.0
+      #   with:
+      #     auth: ${{ secrets.GIST_TOKEN }}
+      #     gistID: dd3e15d244cda22f8a22b79ba575448d
+      #     filename: gh_demo_ci.json
+      #     label: coverage
+      #     message: ${{ steps.coverageComment.outputs.coverage }}
+      #     color: ${{ steps.coverageComment.outputs.color }}
