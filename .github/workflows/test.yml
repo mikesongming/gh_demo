@@ -112,7 +112,7 @@ jobs:
           gistID: dd3e15d244cda22f8a22b79ba575448d
           filename: gh_demo_ci.json
           label: coverage
-          message: ${{ steps.coverageComment.outputs.coverage }}
+          message: ${{ env.coverage }}
           valColorRange: ${{ env.coverage_on_display }}
           maxColorRange: 100
           minColorRange: 0
