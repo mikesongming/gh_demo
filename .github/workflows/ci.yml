@@ -54,9 +54,10 @@ jobs:
           name: ${{ needs.test_test.outputs.xml_reports }}
           path: test_reports
 
-      - run: |
-        ls -a -R .
-        [ ${PASSED} ] && echo 'Tests passed!'
+      - name: List Reports 
+        run: |
+          ls -a -R .
+          [ ${PASSED} ] && echo 'Tests passed!'
 
       - name: Set up Python
         uses: actions/setup-python@v3
