@@ -56,7 +56,7 @@ jobs:
 
       - name: List Reports 
         run: |
-          ls -a -R .
+          ls -a ./test_reports
           [ ${PASSED} ] && echo 'Tests passed!'
 
   test_commentPR:
