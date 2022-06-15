@@ -1,0 +1,96 @@
+name: test
+# collect unit tests and coverage data
+
+on:
+  workflow_call:
+    inputs:
+      os:
+        description: os of runner which built the wheel
+        required: true
+        type: string  # Linux, Windows, or macOS
+      python_version: 
+        description: python version
+        required: true
+        type: string
+      artifact_name:
+        description: name of the artifact of wheels
+        default: 'wheels'
+        required: false
+        type: string
+    outputs:
+      xml_reports:
+        description: artifact name of unit tests and coverage xml reports
+        value: ${{ jobs.testing.outputs.xml_reports }}
+      test_passed:
+        description: boolean of whether passed unit tests
+        value: ${{ jobs.testing.outputs.test_passed }}
+
+defaults:
+  run:
+    shell: bash
+
+jobs:
+  testing:
+    runs-on: >-
+      ${{ 
+        inputs.os == 'Linux' && 'ubuntu-20.04' ||
+        (
+          inputs.os == 'Windows' && 'windows-2019' || 'macos-11'
+        )
+      }}
+    outputs:
+      xml_reports: test_reports
+      test_passed: ${{ env.test_passed }}
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+
+      - name: Download all wheels
+        uses: actions/download-artifact@v3
+        with:
+          name: ${{ inputs.artifact_name }}
+          path: wheelhouse
+
+      - name: Set up Python
+        uses: actions/setup-python@v3
+        with:
+          python-version: ${{ inputs.python_version }}
+
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          python -m pip install pytest pytest-cov
+
+      - name: Install wheel
+        env:
+          OS_KW: >-
+            ${{ 
+              inputs.os == 'Linux' && 'manylinux' ||
+              (
+                inputs.os == 'Windows' && 'win' || 'macosx'
+              )
+            }}
+        run: >
+          python -m pip install --force-reinstall 
+            $(ls ./wheelhouse/*.whl | grep "$OS_KW" | head -n 1)
+          
+      - name: Test using pytest
+        id: test
+        run: |
+          python -m pytest --junit-xml unit.xml | tee coverage.txt
+      
+      - name: Check Status
+        if: ${{ always() }}
+        run: |
+          echo "test_passed=${{job.status == 'success'}}" >> $GITHUB_ENV
+
+      - name: Upload Report
+        # if: ${{ always() }}
+        uses: actions/upload-artifact@v3
+        with:
+          name: test_reports
+          path: 
+            - ./unit.xml
+            - ./coverage.txt
+            - ./.coverage
+          retention-days: 3

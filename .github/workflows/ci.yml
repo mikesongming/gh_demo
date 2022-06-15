@@ -10,7 +10,7 @@ jobs:
       need_wheel: true
       need_sdist: true
   
-  debug:
+  debug_build:
     runs-on: ubuntu-latest
     needs: test_build
     steps:
@@ -31,8 +31,22 @@ jobs:
           name: wheels
           path: wheelhouse
 
-      # - name: Download all workflow run artifacts
-      #   uses: actions/download-artifact@v3
-
       - run: |
           ls -R
+
+  test_test:
+    needs: test_build
+    uses: ./.github/workflows/test.yml
+    with:
+      os: Linux
+      python_version: "3.10"
+  
+  debug_test:
+    runs-on: ubuntu-latest
+    needs: test_test
+    steps:
+      - run: ls -a -R .
+
+  test_commentPR:
+    needs: test_test
+    uses: ./.github/workflows/comment.yml

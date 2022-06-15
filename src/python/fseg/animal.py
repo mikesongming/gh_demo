@@ -6,3 +6,6 @@ def go(kind: str, steps: int):
         return Dog().go(steps)
     else:
         return Animal().go(steps)
+
+def foo():
+    return Pet('kettie', Pet.Cat)

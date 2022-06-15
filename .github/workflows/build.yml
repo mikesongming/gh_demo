@@ -147,5 +147,5 @@ jobs:
       - name: Write outputs 
         id: save
         run: |
-          echo "::set-output name=pkg_name::"${{ env.pkg_name }}
-          echo "::set-output name=pkg_version::"${{ env.pkg_version }}
+          echo "::set-output name=pkg_name::${{ env.pkg_name }}"
+          echo "::set-output name=pkg_version::${{ env.pkg_version }}"
