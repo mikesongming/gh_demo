@@ -61,6 +61,19 @@ jobs:
           python -m pip install --upgrade pip
           python -m pip install pytest pytest-cov
 
+      - name: debug 
+        run: |
+          ls -R .
+          ls ./wheelhouse/*.whl | grep "$OS_KW" | head -n 1
+        env:
+          OS_KW: >-
+            ${{ 
+              inputs.os == 'Linux' && 'manylinux' ||
+              (
+                inputs.os == 'Windows' && 'win' || 'macosx'
+              )
+            }}
+
       - name: Install wheel
         env:
           OS_KW: >-
