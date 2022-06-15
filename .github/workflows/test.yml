@@ -88,7 +88,7 @@ jobs:
         if: ${{ always() }}
         run: |
           echo "test_passed=${{job.status == 'success'}}" >> $GITHUB_ENV
-          echo "coverage=$(coverage report | grep 'TOTAL' | awk '{print $NF}' | sed 's/%//')" >> $GITHUB_ENV
+          echo "coverage=$(coverage report | grep 'TOTAL' | awk '{print $NF}')" >> $GITHUB_ENV
           echo "coverage_on_display=$(coverage report | grep 'TOTAL' | awk '{print $NF}' | sed 's/%//' | awk -F '.' '{print $1}')" >> $GITHUB_ENV
 
       - name: Upload Report

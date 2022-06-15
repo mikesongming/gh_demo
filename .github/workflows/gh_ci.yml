@@ -1,16 +1,16 @@
 name: gh_ci
 
 on:
-  # push:
-  #   branches: [master, main, dev*]
-  #   paths:
-  #     - 'src/*'
-  #     - 'tests/*'
-  # pull_request:
-  #   branches: [master, main, dev*]
-  #   types:
-  #     - opened
-  #     - reopened
+  push:
+    branches: [master, main, dev*]
+    paths:
+      - 'src/*'
+      - 'tests/*'
+  pull_request:
+    branches: [master, main, dev*]
+    types:
+      - opened
+      - reopened
   workflow_dispatch:
 
 defaults:
@@ -23,8 +23,12 @@ jobs:
     # if: "contains(github.event.head_commit.message, '[ci]')"
     strategy:
       matrix:
-        os: [ubuntu-latest, macos-latest, windows-latest]
-        python: ["3.9", "3.10"]
+        os:
+          - ubuntu-latest
+          # - macos-latest
+          # - windows-latest
+        python: 
+          - "3.10"
     runs-on: ${{matrix.os}}
     steps:
       - name: Checkout
