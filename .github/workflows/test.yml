@@ -37,6 +37,7 @@ defaults:
 
 jobs:
   testing:
+    name: 🧪 run tests
     runs-on: >-
       ${{ 
         inputs.os == 'Linux' && 'ubuntu-20.04' ||

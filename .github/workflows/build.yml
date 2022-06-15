@@ -26,7 +26,7 @@ defaults:
 
 jobs:
   build_wheel:
-    name: CIBW (${{matrix.buildplat[0]}}_${{matrix.python}})
+    name: ::rocket:: CIBW (${{matrix.buildplat[0]}}_${{matrix.python}})
     if: ${{ inputs.need_wheel }}
     runs-on: ${{ matrix.buildplat[0] }}
     strategy:
@@ -70,6 +70,7 @@ jobs:
           retention-days: 3
 
   collect_wheels:
+    name: 📦 upload wheels
     if: ${{ inputs.need_wheel }}
     runs-on: ubuntu-latest
     needs: build_wheel
