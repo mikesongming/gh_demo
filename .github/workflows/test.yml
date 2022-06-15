@@ -17,6 +17,9 @@ on:
         default: 'wheels'
         required: false
         type: string
+    secrets:
+      GIST_TOKEN:
+        required: true
     outputs:
       xml_reports:
         description: artifact name of unit tests and coverage xml reports

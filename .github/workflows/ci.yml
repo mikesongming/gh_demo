@@ -41,6 +41,7 @@ jobs:
     with:
       os: Linux
       python_version: "3.10"
+    secrets: inherit
   
   debug_test:
     runs-on: ubuntu-latest
