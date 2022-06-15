@@ -6,10 +6,15 @@ on:
 
 jobs:
   create_issue_branch_job:
-    if: ${{ github.event.}}
     runs-on: ubuntu-latest
     steps:
       - name: Create Issue Branch
         uses: robvanderleek/create-issue-branch@main
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          EVENT_NAME: ${{ github.event_name }}
+          EVENT: ${{ github.evnet }}
+      
+      - run: |
+          echo ${{ env.EVENT_NAME }}
+          echo ${{ env.EVENT }}
