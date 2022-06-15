@@ -24,6 +24,9 @@ on:
       test_passed:
         description: boolean of whether passed unit tests
         value: ${{ jobs.testing.outputs.test_passed }}
+      coverage:
+        description: line coverage in percentage
+        value: ${{ jobs.testing.outputs.coverage }}
 
 defaults:
   run:
@@ -41,6 +44,7 @@ jobs:
     outputs:
       xml_reports: test_reports
       test_passed: ${{ env.test_passed }}
+      coverage: ${{ env.coverage }}
     steps:
       - name: Checkout
         uses: actions/checkout@v3
@@ -80,10 +84,11 @@ jobs:
         run: |
           python -m pytest --junit-xml unit.xml | tee coverage.txt
       
-      - name: Check Status
+      - name: Extract Info
         if: ${{ always() }}
         run: |
           echo "test_passed=${{job.status == 'success'}}" >> $GITHUB_ENV
+          echo "coverage=$(coverage report | grep 'TOTAL' | awk '{print $NF}' | sed 's/%//')" >> $GITHUB_ENV
 
       - name: Upload Report
         # if: ${{ always() }}
@@ -93,5 +98,16 @@ jobs:
           path: |
             ./unit.xml
             ./coverage.txt
-            ./.coverage
           retention-days: 3
+
+      - name: Create Awesome Badge
+        uses: schneegans/dynamic-badges-action@v1.4.0
+        with:
+          auth: ${{ secrets.GIST_TOKEN }}
+          gistID: dd3e15d244cda22f8a22b79ba575448d
+          filename: gh_demo_ci.json
+          label: coverage
+          message: ${{ steps.coverageComment.outputs.coverage }}
+          valColorRange: ${{ env.coverage }}
+          maxColorRange: 100
+          minColorRange: 0

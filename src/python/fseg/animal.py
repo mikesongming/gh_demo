@@ -8,4 +8,10 @@ def go(kind: str, steps: int):
         return Animal().go(steps)
 
 def foo():
+    "Hi "
+    "there!"
+    "How"
+    "are"
+    "you"
+    
     return Pet('kettie', Pet.Cat)
