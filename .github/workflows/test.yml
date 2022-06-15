@@ -70,10 +70,9 @@ jobs:
                 inputs.os == 'Windows' && 'win' || 'macosx'
               )
             }}
-          # WHEEL: >-
-          #   ls ./wheelhouse/*.whl | grep "$OS_KW" | head -n 1
+          WHEEL: >-
+            $(ls ./wheelhouse/*.whl | grep "$OS_KW" | head -n 1)
         run: |
-          echo "WHEEL=${ls ./wheelhouse/*.whl | grep "$OS_KW" | head -n 1}" >> $GITHUB_ENV
           python -m pip install --force-reinstall ${{ env.WHEEL }}
           
       - name: Test using pytest
