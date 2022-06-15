@@ -73,7 +73,7 @@ jobs:
           WHEEL: >-
             $(ls ./wheelhouse/*.whl | grep "$OS_KW" | head -n 1)
         run: >
-          python -m pip install --force-reinstall $(ls ./wheelhouse/*.whl | grep "$OS_KW" | head -n 1)
+          python -m pip install --force-reinstall ${{ env.WHEEL }}
           
       - name: Test using pytest
         id: test
