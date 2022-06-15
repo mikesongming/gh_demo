@@ -26,7 +26,7 @@ defaults:
 
 jobs:
   build_wheel:
-    name: ::rocket:: CIBW (${{matrix.buildplat[0]}}_${{matrix.python}})
+    name: 🚀 CIBW (${{matrix.buildplat[0]}}_${{matrix.python}})
     if: ${{ inputs.need_wheel }}
     runs-on: ${{ matrix.buildplat[0] }}
     strategy:
