@@ -2,7 +2,9 @@ name: Wheel builder
 
 on:
   push:
-    branches: [master, main, dev*]
+    tags:
+      - v**
+    # branches: [master, main, dev*]
     # paths:
     #   - 'src/*'
     #   - 'tests/*'
