@@ -2,13 +2,13 @@ name: Wheel Builder
 
 on:
   push:
-  #   # tags:
-  #   #   - v**
-    branches: [master, main, dev*]
-  #   # paths:
-  #   #   - 'src/*'
-  #   #   - 'tests/*'
-  # pull_request:
+    # tags:
+    #   - v**
+    branches: [master, main, issue*]
+    # paths:
+    #   - 'src/*'
+    #   - 'tests/*'
+  pull_request:
   #   types: [opened, reopened]
   # issue_comment:
   #   types: [created]
@@ -22,7 +22,7 @@ jobs:
     outputs:
       message: ${{ steps.commit_message.outputs.message }}
     steps:
-      - name: Checkout numpy
+      - name: Checkout
         uses: actions/checkout@v3
         with:
           ref: ${{ github.event.pull_request.head.sha }}
@@ -33,9 +33,9 @@ jobs:
           COMMIT_MSG=$(git log --no-merges -1 --oneline)
           echo "::set-output name=message::$COMMIT_MSG"
           echo github.ref ${{ github.ref }}
-          echo ${{ github.event.push }}
-          echo ${{ github.event.push.head_commit.message }}
-          echo ${{ github.event.head_commit.message }}
+          echo 'push>'  ${{ github.event.push }}
+          echo 'push.head_commit>'  ${{ github.event.push.head_commit.message }}
+          echo 'head_commit>'  ${{ github.event.head_commit.message }}
 
       # (github.event_name == 'push' && (
       #   startsWith(github.ref, 'refs/tags/v') ||
