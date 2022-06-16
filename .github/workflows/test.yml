@@ -1,4 +1,4 @@
-name: test
+name: Tests by pytest
 # collect unit tests and coverage data
 
 on:

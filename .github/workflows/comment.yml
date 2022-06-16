@@ -1,4 +1,4 @@
-name: comment
+name: Comment to PR
 
 on:
   workflow_call:
