@@ -4,7 +4,7 @@ on:
   push:
   #   # tags:
   #   #   - v**
-  #   branches: [master, main, dev*]
+    branches: [master, main, dev*]
   #   # paths:
   #   #   - 'src/*'
   #   #   - 'tests/*'
@@ -33,6 +33,7 @@ jobs:
           COMMIT_MSG=$(git log --no-merges -1 --oneline)
           echo "::set-output name=message::$COMMIT_MSG"
           echo github.ref ${{ github.ref }}
+          echo ${{ github.event.push }}
           echo ${{ github.event.push.head_commit.message }}
           echo ${{ github.event.head_commit.message }}
 
