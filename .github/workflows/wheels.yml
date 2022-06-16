@@ -3,7 +3,6 @@ name: Wheel Builder
 on:
   push:
   pull_request:
-    types: [opened, reopened]
   # issue_comment:
   #   types: [created]
   schedule: 
@@ -28,9 +27,9 @@ jobs:
           echo "::set-output name=message::$COMMIT_MSG"
           echo github.ref ${{ github.ref }}
           echo 'head_commit.message>'  "${{ github.event.head_commit.message }}"
+          echo 'action>' ${{ github.event.action }} 
 
       # contains(needs.get_commit_message.outputs.message, '[wheel build]') ||
-      #   contains(github.event.head_commit.message, '[wheel build]'))) ||
       # (github.event_name == 'push_request' &&
       #   contains(github.event.head_commit.message, '[wheel build]')) ||
       # (github.event.issue.pull_request && contains(github.event.comment.body, '[wheel build]'))
@@ -41,7 +40,8 @@ jobs:
       contains(github.event.head_commit.message, '[wheel build]') ||
       github.event_name == 'schedule' ||
       github.event_name == 'workflow_dispatch' ||
-      (github.event_name == 'push' && startsWith(github.ref, 'refs/tags/v'))
+      (github.event_name == 'push' && startsWith(github.ref, 'refs/tags/v')) ||
+      (github.event_name == 'pull_request' && contains(github.event.action, 'opened'))
     with:
       need_wheel: true
       need_sdist: true
