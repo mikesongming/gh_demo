@@ -1,15 +1,8 @@
-name: Wheel builder
+name: Wheels built
 
 on:
   push:
-    tags:
-      - v**
-    # branches: [master, main, dev*]
-    # paths:
-    #   - 'src/*'
-    #   - 'tests/*'
   pull_request:
-    types: [opened, reopened]
   issue_comment:
     types: [created]
   schedule: 
@@ -17,36 +10,36 @@ on:
   workflow_dispatch:
 
 jobs:
-  get_commit_message:
-    runs-on: ubuntu-latest
-    outputs:
-      message: ${{ steps.commit_message.outputs.message }}
-    steps:
-      - name: Checkout numpy
-        uses: actions/checkout@v3
-        with:
-          ref: ${{ github.event.pull_request.head.sha }}
-      - name: Get commit message
-        id: commit_message
-        run: |
-          set -xe
-          COMMIT_MSG=$(git log --no-merges -1 --oneline)
-          echo "::set-output name=message::$COMMIT_MSG"
-          echo github.ref ${{ github.ref }}
+  # get_commit_message:
+  #   runs-on: ubuntu-latest
+  #   outputs:
+  #     message: ${{ steps.commit_message.outputs.message }}
+  #   steps:
+  #     - name: Checkout
+  #       uses: actions/checkout@v3
+  #       with:
+  #         ref: ${{ github.event.pull_request.head.sha }}
+  #     - name: Get commit message
+  #       id: commit_message
+  #       run: |
+  #         set -xe
+  #         COMMIT_MSG=$(git log --no-merges -1 --oneline)
+  #         echo "::set-output name=message::$COMMIT_MSG"
+  #         echo github.ref ${{ github.ref }}
+  #         echo 'head_commit.message>'  "${{ github.event.head_commit.message }}"
+  #         echo 'action>' ${{ github.event.action }}
+  #         echo 'comment.body>' ${{ github.event.comment.body }}
 
-      # (github.event_name == 'push' && (
-      #   startsWith(github.ref, 'refs/tags/v') ||
-      #   contains(github.event.head_commit.message, '[wheel build]'))) ||
-      # (github.event_name == 'push_request' &&
-      #   contains(github.event.head_commit.message, '[wheel build]')) ||
-      # (github.event.issue.pull_request && contains(github.event.comment.body, '[wheel build]'))
   test_build:
-    needs: get_commit_message
+    # needs: get_commit_message
     uses: ./.github/workflows/build.yml 
     if: >- 
-      contains(needs.get_commit_message.outputs.message, '[wheel build]') ||
+      contains(github.event.head_commit.message, '[wheel build]') ||
       github.event_name == 'schedule' ||
-      github.event_name == 'workflow_dispatch'
+      github.event_name == 'workflow_dispatch' ||
+      (github.event_name == 'push' && startsWith(github.ref, 'refs/tags/v')) ||
+      (github.event_name == 'pull_request' && contains(github.event.action, 'opened')) ||
+      (github.event.issue.pull_request && contains(github.event.comment.body, '[wheel build]'))
     with:
       need_wheel: true
       need_sdist: true
@@ -56,7 +49,6 @@ jobs:
     needs: test_build
     steps:
       - run: | 
-          echo ${{ needs.test_build.outputs.sdist_artifact }}
           echo ${{ needs.test_build.outputs.pkg_name }}
           echo ${{ needs.test_build.outputs.pkg_version }}
       
@@ -105,17 +97,30 @@ jobs:
     if: ${{ github.event.pull_request || github.event.issue.pull_request }}
     uses: ./.github/workflows/comment.yml
 
-  # test_publish:
-  #   name: ✨ publish to PYPY
-  #   needs: test_test
-  #   runs-on: ubuntu-latest
-  #   steps:
-  #     - name: Publish package to TestPyPI
-  #       if: ${{ steps.coverageComment.outputs.errors == '0' && matrix.os == 'ubuntu-latest' }}
-  #       uses: pypa/gh-action-pypi-publish@release/v1
-  #       with:
-  #         user: __token__
-  #         password: ${{ secrets.TEST_PYPI_API_TOKEN }}
-  #         repository_url: https://test.pypi.org/legacy/
-  #         skip_existing: true
-  #         print_hash: true
+  test_publish:
+    name: ✨ publish to PYPY
+    needs: [test_build, test_test]
+    runs-on: ubuntu-latest
+    if: >-
+      needs.test_test.outputs.test_passed
+    steps:
+      - name: Download sdist
+        uses: actions/download-artifact@v3
+        with:
+          name: sdist
+          path: dist
+
+      - name: Download all wheels
+        uses: actions/download-artifact@v3
+        with:
+          name: wheels
+          path: dist
+
+      - name: Publish package to TestPyPI
+        uses: pypa/gh-action-pypi-publish@release/v1
+        with:
+          user: __token__
+          password: ${{ secrets.TEST_PYPI_API_TOKEN }}
+          repository_url: https://test.pypi.org/legacy/
+          skip_existing: true
+          print_hash: true
