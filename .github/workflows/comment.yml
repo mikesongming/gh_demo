@@ -20,8 +20,8 @@ defaults:
 
 jobs:
   commentPR:
+    name: 🔖 comment-PR
     runs-on: ubuntu-latest
-    if: ${{ github.event.pull_request }}
     steps:
       - name: Download Reports
         uses: actions/download-artifact@v3
@@ -29,9 +29,8 @@ jobs:
           name: ${{ inputs.artifact_name }}
           path: test_reports
 
-      - name: Pytest coverage comment
+      - name: coverage comment
         id: coverageComment
-        if: ${{ github.event.pull_request && matrix.os == 'ubuntu-latest' }}
         uses: MishaKav/pytest-coverage-comment@main
         with:
           create-new-comment: ${{ inputs.create-new-comment }}
