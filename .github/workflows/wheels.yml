@@ -3,9 +3,9 @@ name: Wheel builder
 on:
   push:
     branches: [master, main, dev*]
-    paths:
-      - 'src/*'
-      - 'tests/*'
+    # paths:
+    #   - 'src/*'
+    #   - 'tests/*'
   pull_request:
     # types: [opened, reopened]
   issue_comment:
@@ -17,21 +17,33 @@ on:
 jobs:
   get_commit_message:
     runs-on: ubuntu-latest
+    outputs:
+      message: ${{ steps.commit_message.outputs.message }}
     steps:
-      - run: |
-          echo ${{ github.event.head_commit.message }}
+      - name: Checkout numpy
+        uses: actions/checkout@v3
+        with:
+          ref: ${{ github.event.pull_request.head.sha }}
+      - name: Get commit message
+        id: commit_message
+        run: |
+          set -xe
+          COMMIT_MSG=$(git log --no-merges -1 --oneline)
+          echo "::set-output name=message::$COMMIT_MSG"
+          echo github.ref ${{ github.ref }}
 
+      # (github.event_name == 'push' && (
+      #   startsWith(github.ref, 'refs/tags/v') ||
+      #   contains(github.event.head_commit.message, '[wheel build]'))) ||
+      # (github.event_name == 'push_request' &&
+      #   contains(github.event.head_commit.message, '[wheel build]')) ||
   test_build:
     needs: get_commit_message
     uses: ./.github/workflows/build.yml 
     if: >- 
+      contains(needs.get_commit_message.outputs.message, '[wheel build]') ||
       github.event_name == 'schedule' ||
       github.event_name == 'workflow_dispatch' ||
-      (github.event_name == 'push' && (
-        startsWith(github.ref, 'refs/tags/v') ||
-        contains(github.event.head_commit.message, '[wheel build]'))) ||
-      (github.event_name == 'push_request' &&
-        contains(github.event.head_commit.message, '[wheel build]')) ||
       (github.event.issue.pull_request && contains(github.event.comment.body, '[wheel build]'))
     with:
       need_wheel: true
