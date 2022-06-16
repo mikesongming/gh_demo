@@ -1,11 +1,22 @@
-name: ci
+name: wheels
 
 on:
+  push:
+    branches: [master, main, dev*]
+    paths:
+      - 'src/*'
+      - 'tests/*'
+  pull_request:
   workflow_dispatch:
 
 jobs:
   test_build:
-    uses: ./.github/workflows/build.yml 
+    uses: ./.github/actions/build.yml 
+    if: >-
+      (github.event_name == 'push'
+        && contains(github.event.head_commit.message, '[wheels]')
+        || github.event.pull_request
+        || github.event.workflow_dispatch
     with:
       need_wheel: true
       need_sdist: true
@@ -36,7 +47,7 @@ jobs:
 
   test_test:
     needs: test_build
-    uses: ./.github/workflows/test.yml
+    uses: ./.github/actions/test.yml
     with:
       os: Linux
       python_version: "3.10"
@@ -61,4 +72,4 @@ jobs:
 
   test_commentPR:
     needs: test_test
-    uses: ./.github/workflows/comment.yml
+    uses: ./.github/actions/comment.yml

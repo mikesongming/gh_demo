@@ -1,16 +1,16 @@
 name: gh_ci
 
 on:
-  push:
-    branches: [master, main, dev*]
-    paths:
-      - 'src/*'
-      - 'tests/*'
-  pull_request:
-    branches: [master, main, dev*]
-    types:
-      - opened
-      - reopened
+  # push:
+  #   branches: [master, main, dev*]
+  #   paths:
+  #     - 'src/*'
+  #     - 'tests/*'
+  # pull_request:
+  #   branches: [master, main, dev*]
+  #   types:
+  #     - opened
+  #     - reopened
   workflow_dispatch:
 
 defaults:
