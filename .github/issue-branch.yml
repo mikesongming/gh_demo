@@ -19,3 +19,6 @@ copyIssueLabelsToPR: true
 copyIssueAssigneeToPR: true
 copyIssueProjectsToPR: true
 copyIssueMilestoneToPR: true
+
+# close Issue after merging PR
+autoCloseIssue: true
