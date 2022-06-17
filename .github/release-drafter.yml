@@ -24,11 +24,6 @@ categories:
       - maintenance
 change-template: '- $TITLE (#$NUMBER)'
 template: |
-  ## Getting Vanilla Framework
-
-  Install with NPM: https://www.npmjs.com/package/vanilla-framework
-  Visit the documentation at https://docs.vanillaframework.io
-
-  ## New in Vanilla v$NEXT_PATCH_VERSION
+  ## What’s Changed
 
   $CHANGES
