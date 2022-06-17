@@ -1,0 +1,34 @@
+name-template: 'v$NEXT_PATCH_VERSION'
+tag-template: 'v$NEXT_PATCH_VERSION'
+categories:
+  - title: '🚀 Features'
+    lables:
+      - feat
+      - feature
+      - enhancement
+  - title: '💣 Breaking Change'
+    label: 'Breaking Change'
+  - title: '🐛 Bug Fixes'
+    label: 'Bug 🐛'
+    labels:
+      - bug
+      - fix
+      - bugfix
+  - title: '📝 Documentation'
+    labels: 
+      - documentation
+  - title: '🔨 Maintenance'
+    labels: 
+      - chore
+      - maint
+      - maintenance
+change-template: '- $TITLE (#$NUMBER)'
+template: |
+  ## Getting Vanilla Framework
+
+  Install with NPM: https://www.npmjs.com/package/vanilla-framework
+  Visit the documentation at https://docs.vanillaframework.io
+
+  ## New in Vanilla v$NEXT_PATCH_VERSION
+
+  $CHANGES
