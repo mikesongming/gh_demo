@@ -11,3 +11,11 @@ branches:
     prefix: doc/
   - label: '*'
     skip: true
+
+# open PR related to the create branch 
+openPR: true
+copyIssueDescriptionToPR: true
+copyIssueLabelsToPR: true
+copyIssueAssigneeToPR: true
+copyIssueProjectsToPR: true
+copyIssueMilestoneToPR: true
