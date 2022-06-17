@@ -1,4 +1,4 @@
-name-template: 'v$RESOLVED_VERSION :rainbow:'
+name-template: 'v$RESOLVED_VERSION 🌈'
 tag-template: 'v$RESOLVED_VERSION'
 categories:
   - title: '🚀 Features'
@@ -9,7 +9,6 @@ categories:
   - title: '💣 Breaking Change'
     label: 'Breaking Change'
   - title: '🐛 Bug Fixes'
-    label: 'Bug 🐛'
     labels:
       - bug
       - fix
@@ -24,6 +23,22 @@ categories:
       - chore
       - maint
       - maintenance
+
+include-labels:
+  - feat
+  - feature
+  - enhancement
+  - 'Breaking Change'
+  - bug
+  - fix
+  - bugfix
+  - doc
+  - docs
+  - documentation
+  - chore
+  - maint
+  - maintenance
+
 change-template: '- $TITLE (#$NUMBER)'
 change-title-escapes: '\<*_&`@#' # add # and @ to disable mentions, and add ` to disable code blocks.
 
@@ -31,12 +46,16 @@ version-resolver:
   major:
     labels:
       - 'major'
+      - 'Breaking Change'
   minor:
     labels:
       - 'minor'
+      - 'enhancement'
   patch:
     labels:
       - 'patch'
+      - 'bug'
+      - 'maintenance'
   default: patch
 
 template: |

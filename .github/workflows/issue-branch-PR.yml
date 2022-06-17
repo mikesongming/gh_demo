@@ -1,4 +1,4 @@
-name: Issue assigned
+name: Issue Picked
 
 on:
   # The issues event below is only needed for the default (auto) mode,
