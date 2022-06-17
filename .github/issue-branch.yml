@@ -1,2 +1,13 @@
 # branchName: short
 branchName: '${issue.number}-${issue.title[0,64]}'
+branches:
+  - label: bug
+    prefix: fix/
+  - label: enhancement
+    prefix: feat/
+  - label: maintenance
+    prefix: chore/
+  - label: documentation
+    prefix: doc/
+  - label: '*'
+    skip: true
