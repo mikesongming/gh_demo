@@ -5,6 +5,8 @@ on:
   # you can remove it otherwise
   issues:
     types: [ opened, reopened, assigned ]
+  issue_comment:
+    types: [ created ]
 
 jobs:
   create_issue_branch_job:
