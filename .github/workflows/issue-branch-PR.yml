@@ -3,8 +3,8 @@ name: Issue assigned
 on:
   # The issues event below is only needed for the default (auto) mode,
   # you can remove it otherwise
-  issues:
-    types: [ opened, reopened, assigned ]
+  # issues:
+  #   types: [ opened, reopened, assigned ]
   issue_comment:
     types: [ created ]
 
