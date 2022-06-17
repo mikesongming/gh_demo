@@ -4,7 +4,7 @@ on:
   # The issues event below is only needed for the default (auto) mode,
   # you can remove it otherwise
   issues:
-    types: [ assigned ]
+    types: [ opened, reopened, assigned ]
 
 jobs:
   create_issue_branch_job:
