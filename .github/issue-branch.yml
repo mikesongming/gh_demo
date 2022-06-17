@@ -1,1 +1,2 @@
-branchName: short
+# branchName: short
+branchName: '${issue.number}-${issue.title[0,64]}'
