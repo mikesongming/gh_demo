@@ -6,7 +6,7 @@ on:
       - released
 
 jobs:
-  print_action:
+  print_release:
     runs-on: ubuntu-latest
     steps:
       - run: |
@@ -15,3 +15,4 @@ jobs:
           echo ${{ github.event.release.prerelease }}
           echo ${{ github.event.release.name }}
           echo ${{ github.event.release.tag_name }}
+          echo ${{ github.ref_name }}
