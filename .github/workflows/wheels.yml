@@ -45,6 +45,7 @@ jobs:
       need_sdist: false
       ref: $GITHUB_REF
       ref_name: $GITHUB_REF_NAME
+      head_ref: ${{ github.event.head.ref }}
   
   debug_build:
     runs-on: ubuntu-latest
