@@ -41,6 +41,14 @@ jobs:
           # - 'cp39'
           - 'cp310'
     steps:
+      - name: PR Branch Name
+        id: pr_branch
+        if: github.event.pull_request
+        env:
+          PR_BranchName: ${{ github.event.head.ref}}
+        run: |
+          echo $PR_BranchName
+
       - name: Checkout
         uses: actions/checkout@v3
 
