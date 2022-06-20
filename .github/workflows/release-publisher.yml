@@ -1,7 +1,10 @@
 name: Release Publisher
 
 on:
-  release
+  release:
+    types:
+      - published
+      - released
 
 jobs:
   print_action:
