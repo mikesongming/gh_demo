@@ -41,8 +41,8 @@ jobs:
       (github.event_name == 'pull_request' && contains(github.event.action, 'opened')) ||
       (github.event.issue.pull_request && github.event.comment.body == '/build')
     with:
-      need_wheel: false
-      need_sdist: false
+      need_wheel: true
+      need_sdist: true
       ref: >-
         ${{ github.event.pull_request && 
           github.event.pull_request.head.ref || github.ref_name
@@ -75,6 +75,10 @@ jobs:
     needs: test_build
     uses: ./.github/workflows/test.yml
     with:
+      ref: >-
+        ${{ github.event.pull_request && 
+          github.event.pull_request.head.ref || github.ref_name
+        }}
       os: Linux
       python_version: "3.10"
     secrets: inherit
