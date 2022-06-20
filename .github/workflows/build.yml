@@ -41,16 +41,23 @@ jobs:
           # - 'cp39'
           - 'cp310'
     steps:
-      - name: PR Branch Name
-        id: pr_branch
-        if: github.event.pull_request
-        env:
-          PR_BranchName: ${{ github.event.head.ref}}
+
+      - uses: haya14busa/action-cond@v1
+        id: check_ref
+        with:
+          cond: ${{ github.event_name == 'pull_request' }}
+          if_true: ${{ github.event.head.ref}}
+          if_false: ""
+
+      - name: Debug PR Branch Name
         run: |
-          echo $PR_BranchName
+          echo "GITHUB_REF_NAME: ${GITHUB_REF_NAME}"
+          echo "head.ref: ${{steps.check_ref.outputs.value}}"
 
       - name: Checkout
         uses: actions/checkout@v3
+        with:
+          ref: ${{ steps.check_ref.outputs.value }}
 
       - name: Set up Python3
         uses: actions/setup-python@v3
