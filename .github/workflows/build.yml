@@ -45,6 +45,8 @@ jobs:
           echo ${{ inputs.head_sha }}
           echo ${{ github.event.pull_request.head.sha }}
           echo ${{ github.event.pull_request.head.ref }}
+          echo ${{ github.event.issue.pull_request.head.sha }}
+          echo ${{ github.event.issue.pull_request.head.ref }}
 
   build_wheel:
     name: 🚀 CIBW (${{matrix.buildplat[0]}}_${{matrix.python}})
