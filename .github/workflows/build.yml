@@ -10,7 +10,7 @@ on:
       ref_name:
         required: true
         type: string
-      head_ref:
+      head_sha:
         required: true
         type: string
       need_wheel:
@@ -42,8 +42,9 @@ jobs:
           echo $GITHUB_REF
           echo ${{ inputs.ref_name }}
           echo $GITHUB_REF_NAME
-          echo ${{ inputs.head_ref }}
-          echo ${{ github.event.head.ref }}
+          echo ${{ inputs.head_sha }}
+          echo ${{ github.event.pull_request.head.sha }}
+          echo ${{ github.event.pull_request.head.ref }}
 
   build_wheel:
     name: 🚀 CIBW (${{matrix.buildplat[0]}}_${{matrix.python}})
