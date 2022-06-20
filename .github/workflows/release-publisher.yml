@@ -14,3 +14,4 @@ jobs:
           echo ${{ github.event.release.draft }}
           echo ${{ github.event.release.prerelease }}
           echo ${{ github.event.release.name }}
+          echo ${{ github.event.release.tag_name }}
