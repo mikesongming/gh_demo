@@ -8,8 +8,8 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - run: |
-          echo 'action>'${{ github.event.action }}
+          echo ${{ github.event.action }}
           echo ${{ github.event.release.draft }}
-          echo ${{ github.event.release.release }}
+          echo ${{ github.event.release.prerelease }}
           echo ${{ github.event.release.name }}
           echo ${{ github.event.release.body }}
