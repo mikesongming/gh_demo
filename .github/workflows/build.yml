@@ -4,6 +4,12 @@ name: Build Packages
 on:
   workflow_call:
     inputs:
+      ref:
+        required: true
+        type: string
+      ref_name:
+        required: true
+        type: string
       need_wheel:
         default: true
         required: false
@@ -25,8 +31,18 @@ defaults:
     shell: bash
 
 jobs:
+  debug_ref:
+    runs-on: ubuntu-latest
+    steps:
+      - run: |
+          echo ${{ inputs.ref }}
+          echo $GITHUB_REF
+          echo ${{ inputs.ref_name }}
+          echo $GITHUB_REF_NAME
+
   build_wheel:
     name: 🚀 CIBW (${{matrix.buildplat[0]}}_${{matrix.python}})
+    needs: debug_ref
     if: ${{ inputs.need_wheel }}
     runs-on: ${{ matrix.buildplat[0] }}
     strategy:
@@ -42,22 +58,24 @@ jobs:
           - 'cp310'
     steps:
 
-      - uses: haya14busa/action-cond@v1
-        id: check_ref
-        with:
-          cond: ${{ github.event_name == 'pull_request' }}
-          if_true: ${{ github.event.head.ref}}
-          if_false: ""
+      # - uses: haya14busa/action-cond@v1
+      #   id: check_ref
+      #   with:
+      #     cond: ${{ github.event.pull_request }}
+      #     if_true: ${{ github.event.head.ref}}
+      #     if_false: ""
 
-      - name: Debug PR Branch Name
-        run: |
-          echo "GITHUB_REF_NAME: ${GITHUB_REF_NAME}"
-          echo "head.ref: ${{steps.check_ref.outputs.value}}"
+      # - name: Debug PR Branch Name
+      #   run: |
+      #     echo "GITHUB_REF_NAME: ${GITHUB_REF_NAME}"
+      #     echo "head.ref: ${{steps.check_ref.outputs.value}}"
+
+      # - name: Debug
+      #   run: |
+      #     echo ${{ github.event.pull_request.head.sha }}
 
       - name: Checkout
         uses: actions/checkout@v3
-        with:
-          ref: ${{ steps.check_ref.outputs.value }}
 
       - name: Set up Python3
         uses: actions/setup-python@v3
@@ -125,6 +143,7 @@ jobs:
 
   build_sdist:
     name: 📦 build sdist
+    needs: debug_ref
     if: ${{ inputs.need_sdist }}
     runs-on: ubuntu-latest
     outputs:

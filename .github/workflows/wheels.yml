@@ -41,8 +41,10 @@ jobs:
       (github.event_name == 'pull_request' && contains(github.event.action, 'opened')) ||
       (github.event.issue.pull_request && github.event.comment.body == '/build')
     with:
-      need_wheel: true
-      need_sdist: true
+      need_wheel: false
+      need_sdist: false
+      ref: $GITHUB_REF
+      ref_name: $GITHUB_REF_NAME
   
   debug_build:
     runs-on: ubuntu-latest
