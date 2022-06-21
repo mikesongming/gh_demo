@@ -3,6 +3,7 @@ name: Wheels built
 on:
   push:
   pull_request:
+    types: [opened, reopened]
   issue_comment:
     types: [created]
   schedule: 
@@ -10,7 +11,13 @@ on:
   workflow_dispatch:
 
 jobs:
-  pr-comment:
+  get-trigger-branch-ref:
+    if: >- 
+      contains(github.event.head_commit.message, '[build]') ||
+      github.event_name == 'schedule' ||
+      github.event_name == 'workflow_dispatch' ||
+      github.event_name == 'pull_request' ||
+      (github.event.issue.pull_request && github.event.comment.body == '/build')
     runs-on: ubuntu-latest
     outputs:
       head_ref: ${{ steps.cond-ref.outputs.value }}
@@ -66,18 +73,12 @@ jobs:
   #         echo 'comment.body>' ${{ github.event.comment.body }}
 
   test_build:
-    needs: pr-comment
+    needs: get-trigger-branch-ref
     uses: ./.github/workflows/build.yml 
-    if: >- 
-      contains(github.event.head_commit.message, '[wheel build]') ||
-      github.event_name == 'schedule' ||
-      github.event_name == 'workflow_dispatch' ||
-      (github.event_name == 'pull_request' && contains(github.event.action, 'opened')) ||
-      (github.event.issue.pull_request && github.event.comment.body == '/build')
     with:
       need_wheel: true
       need_sdist: true
-      ref: ${{ needs.pr-comment.outputs.head_ref}}
+      ref: ${{ needs.get-trigger-branch-ref.outputs.head_ref}}
 
   debug_build:
     runs-on: ubuntu-latest
@@ -103,10 +104,10 @@ jobs:
           ls -R
 
   test_test:
-    needs: test_build
+    needs: [get-trigger-branch-ref, test_build]
     uses: ./.github/workflows/test.yml
     with:
-      ref: ${{ needs.pr-comment.outputs.head_ref}}
+      ref: ${{ needs.get-trigger-branch-ref.outputs.head_ref}}
       os: Linux
       python_version: "3.10"
     secrets: inherit
