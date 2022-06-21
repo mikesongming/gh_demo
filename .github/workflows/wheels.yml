@@ -10,6 +10,41 @@ on:
   workflow_dispatch:
 
 jobs:
+  pr-comment:
+    runs-on: ubuntu-latest
+    outputs:
+      head_ref: ${{ steps.cond-ref.outputs.value }}
+    permissions:
+      contents: read
+      pull-requests: read
+    steps:
+      - uses: haya14busa/action-cond@v1
+        id: no-comment-ref
+        with:
+          cond: ${{ github.event_name == 'pull_request' }}
+          if_true: ${{ github.event.pull_request.head.ref }}
+          if_false: ${{ github.ref_name }}
+
+      - uses: xt0rted/pull-request-comment-branch@v1
+        if: github.event_name == 'issue_comment'
+        id: comment-branch
+      
+      - name: show PR comment branch ref
+        if: (github.event_name == 'issue_comment') && success()
+        run: |
+          echo ${{ steps.comment-branch.outputs.head_ref }}
+
+      - uses: haya14busa/action-cond@v1
+        id: cond-ref
+        with:
+          cond: ${{ github.event_name == 'issue_comment' }}
+          if_true: ${{ steps.comment-branch.outputs.head_ref }}
+          if_false: ${{ steps.no-comment-ref.outputs.value }}
+
+      - name: show ref
+        run: |
+          echo ${{ steps.cond-ref.outputs.value }}
+
   # get_commit_message:
   #   runs-on: ubuntu-latest
   #   outputs:
@@ -31,7 +66,7 @@ jobs:
   #         echo 'comment.body>' ${{ github.event.comment.body }}
 
   test_build:
-    # needs: get_commit_message
+    needs: pr-comment
     uses: ./.github/workflows/build.yml 
     if: >- 
       contains(github.event.head_commit.message, '[wheel build]') ||
@@ -42,11 +77,8 @@ jobs:
     with:
       need_wheel: true
       need_sdist: true
-      ref: >-
-        ${{ github.event.pull_request && 
-          github.event.pull_request.head.ref || github.ref_name
-        }}
-  
+      ref: ${{ needs.pr-comment.outputs.head_ref}}
+
   debug_build:
     runs-on: ubuntu-latest
     needs: test_build
@@ -74,10 +106,7 @@ jobs:
     needs: test_build
     uses: ./.github/workflows/test.yml
     with:
-      ref: >-
-        ${{ github.event.pull_request && 
-          github.event.pull_request.head.ref || github.ref_name
-        }}
+      ref: ${{ needs.pr-comment.outputs.head_ref}}
       os: Linux
       python_version: "3.10"
     secrets: inherit
