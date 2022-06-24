@@ -1,12 +1,11 @@
 [tool.towncrier]
-name='demo'
-filename = "docs/changelog.md"
+# package = "fseg"
+filename = "docs/changelog.rst"
 directory = "changes/"
-title_format = "TC-DEMO {name} {version} ({project_date})"
-issue_format = "[#{issue}](https://github.com/mikesongming/gh_demo/issues/{issue})"
-start_string = "<!-- towncrier release notes start -->\n"
-single_file = true
-wrap = true
+# title_format = "{version} ({project_date})"
+title_format = false
+issue_format = "{issue}"
+template = "changes/_template.rst"
 
   [[tool.towncrier.type]]
   directory = "api"
