@@ -1,0 +1,43 @@
+[tool.towncrier]
+package = "fseg"
+filename = "docs/changelog.rst"
+directory = "changes/"
+# title_format = "{version} ({project_date})"
+title_format = false
+issue_format = "{issue}"
+template = "changes/_template.rst"
+
+  [[tool.towncrier.type]]
+  directory = "api"
+  name = "API Changes"
+  showcontent = true
+
+  [[tool.towncrier.type]]
+  directory = "feature"
+  name = "Features"
+  showcontent = true
+
+  [[tool.towncrier.type]]
+  directory = "bug"
+  name = "Bug Fixes"
+  showcontent = true
+
+  [[tool.towncrier.type]]
+  directory = "docs"
+  name = "Documentation Improvements"
+  showcontent = true
+
+  [[tool.towncrier.type]]
+  directory = "dev"
+  name = "Development Changes"
+  showcontent = true
+
+  [[tool.towncrier.type]]
+  directory = "other"
+  name = "Other Changes"
+  showcontent = true
+
+  [[tool.towncrier.type]]
+  directory = "author"
+  name = "Contributors"
+  showcontent = true

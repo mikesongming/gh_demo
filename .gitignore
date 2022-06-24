@@ -133,3 +133,4 @@ dmypy.json
 # Pyre type checker
 .pyre/
 coverage.txt
+src/python/fseg/_version.py
