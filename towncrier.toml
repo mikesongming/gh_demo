@@ -2,24 +2,25 @@
 name='demo'
 filename = "docs/changelog.md"
 directory = "changes/"
+template = "changes/_changes_template.md.j2"
 title_format = "TC-DEMO {name} {version} ({project_date})"
-issue_format = "[#{issue}](https://github.com/mikesongming/gh_demo/issues/{issue})"
+# issue_format = "[#{issue}](https://github.com/mikesongming/gh_demo/issues/{issue})"
 start_string = "<!-- towncrier release notes start -->\n"
 single_file = true
 
   [[tool.towncrier.type]]
   directory = "api"
-  name = "API Changes"
+  name = ":apple: API Changes"
   showcontent = true
 
   [[tool.towncrier.type]]
   directory = "feature"
-  name = "Features"
+  name = ":rocket: Features"
   showcontent = true
 
   [[tool.towncrier.type]]
   directory = "bug"
-  name = "Bug Fixes"
+  name = ":bug: Bug Fixes"
   showcontent = true
 
   [[tool.towncrier.type]]
