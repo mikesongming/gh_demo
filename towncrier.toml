@@ -6,7 +6,6 @@ title_format = "TC-DEMO {name} {version} ({project_date})"
 issue_format = "[#{issue}](https://github.com/mikesongming/gh_demo/issues/{issue})"
 start_string = "<!-- towncrier release notes start -->\n"
 single_file = true
-wrap = true
 
   [[tool.towncrier.type]]
   directory = "api"
