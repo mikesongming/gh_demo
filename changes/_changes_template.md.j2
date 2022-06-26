@@ -8,6 +8,8 @@
 {%- endif -%}
 {%- endmacro -%}
 
+# v{{ versiondata.version }} ({{ versiondata.date }})
+
 {% for section, _ in sections.items() %}
 {% set underline = underlines[0] %}{% if section %} # {{section}}
 {# {{ underline * section|length }}{% set underline = underlines[1] %} #}
